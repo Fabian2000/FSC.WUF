@@ -4,7 +4,20 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <LangVersion>11.0</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Bootstrap\bootstrap.bundle.js" />
+    <None Remove="Bootstrap\bootstrap.css" />
+    <None Remove="Bootstrap\fsc.wuf.api.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Bootstrap\bootstrap.bundle.js" />
+    <EmbeddedResource Include="Bootstrap\bootstrap.css" />
+    <EmbeddedResource Include="Bootstrap\fsc.wuf.api.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1462.37" />
