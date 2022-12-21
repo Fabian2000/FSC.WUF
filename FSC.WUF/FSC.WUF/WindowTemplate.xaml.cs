@@ -89,6 +89,10 @@ namespace FSC.WUF
             webView.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
             webView.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
             webView.CoreWebView2.Settings.IsSwipeNavigationEnabled = false;
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+#if DEBUG
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = true;
+#endif
 
             return true;
         }

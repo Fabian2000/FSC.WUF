@@ -34,12 +34,23 @@ namespace FSC.WUF
 
         public static WindowManager Create(Action<WindowManager> run, Size size)
         {
+            return Create(run, size, WindowStartupLocation.CenterOwner);
+        }
+
+        public static WindowManager Create(Action<WindowManager> run, WindowStartupLocation windowStartupLocation)
+        {
+            return Create(run, new Size(1080, 720), windowStartupLocation);
+        }
+
+        public static WindowManager Create(Action<WindowManager> run, Size size, WindowStartupLocation windowStartupLocation)
+        {
             var windowManager = new WindowManager();
 
             windowManager._window = new WindowTemplate(run, windowManager, () => { windowManager.EventManager(); });
 
             windowManager.Height = size.Height;
             windowManager.Width = size.Width;
+            windowManager.WindowStartupLocation = windowStartupLocation;
 
             windowManager.Titlebar = new WindowTitlebar();
 

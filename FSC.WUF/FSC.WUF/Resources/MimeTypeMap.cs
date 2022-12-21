@@ -789,7 +789,7 @@ namespace MimeTypes
         /// <param name="mimeType">The variable to store the MIME type.</param>
         /// <returns>The MIME type.</returns>
         /// <exception cref="ArgumentNullException" />
-        internal static bool TryGetMimeType(string str, out string mimeType)
+        internal static bool TryGetMimeType(string str, out string? mimeType)
         {
             if (str == null)
             {
@@ -825,7 +825,7 @@ namespace MimeTypes
         /// <exception cref="ArgumentNullException" />
         internal static string GetMimeType(string str)
         {
-            return MimeTypeMap.TryGetMimeType(str, out var result) ? result : DefaultMimeType;
+            return MimeTypeMap.TryGetMimeType(str, out var result) ? result! : DefaultMimeType;
         }
 
         /// <summary>
@@ -848,7 +848,7 @@ namespace MimeTypes
                 throw new ArgumentException("Requested mime type is not valid: " + mimeType);
             }
 
-            if (_mappings.Value.TryGetValue(mimeType, out string extension))
+            if (_mappings.Value.TryGetValue(mimeType, out string? extension))
             {
                 return extension;
             }

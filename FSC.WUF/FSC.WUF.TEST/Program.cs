@@ -8,8 +8,8 @@ namespace FSC.WUF.TEST
         [STAThread]
         static void Main(string[] args)
         {
-            WindowManager.Create((WindowManager window) => Run(window), new Size(300, 300));
-
+            var window = WindowManager.Create((WindowManager window) => Run(window), new Size(300, 300));
+            
             Application application = new Application();
             application.Run();
         }

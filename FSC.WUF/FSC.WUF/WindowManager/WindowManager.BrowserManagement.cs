@@ -9,9 +9,9 @@ namespace FSC.WUF
     {
         private Dictionary<int, Action> _events = new Dictionary<int, Action>();
 
-        public event EventHandler<EventArgs> OnLoaded;
+        public event EventHandler<EventArgs>? OnLoaded;
 
-        public event EventHandler<WindowManagerLinkEventArgs> OnPopup;
+        public event EventHandler<WindowManagerLinkEventArgs>? OnPopup;
 
         public async Task AddEventListener(string element, string eventType, Action callback)
         {

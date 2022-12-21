@@ -68,6 +68,38 @@ namespace FSC.WUF
             return await ExecuteScript($"innerHTML");
         }
 
+        public async Task Append(Html html)
+        {
+            if (!html.IsValid())
+            {
+                throw new Exception("Invalid html");
+            }
+
+            await ExecuteScript($"insertAdjacentHTML('beforeend', '{html.resource.ReplaceLineEndings("")}')");
+        }
+
+        public async Task Append(Css css)
+        {
+            if (!css.IsValid())
+            {
+                throw new Exception("Invalid Css");
+            }
+
+            css.BuildDataUrl("css");
+
+            await ExecuteScript($"""insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="{css.dataURL}">')""");
+        }
+
+        public async Task Prepend(Html html)
+        {
+            if (!html.IsValid())
+            {
+                throw new Exception("Invalid html");
+            }
+
+            await ExecuteScript($"insertAdjacentHTML('afterbegin', '{html.resource.ReplaceLineEndings("")}')");
+        }
+
         public async Task InnerText(string text)
         {
             await ExecuteScript($"innerText = '{text}'");
@@ -76,6 +108,13 @@ namespace FSC.WUF
         public async Task<string> InnerText()
         {
             return await ExecuteScript($"innerText");
+        }
+
+        public async Task<string> Style(string cssProp)
+        {
+            char[] cssPropChars = cssProp.ToCharArray();
+            cssPropChars[0] = char.ToLower(cssPropChars[0]);
+            return await ExecuteScript($"style.{cssProp}");
         }
 
         public async Task<string> Value()
