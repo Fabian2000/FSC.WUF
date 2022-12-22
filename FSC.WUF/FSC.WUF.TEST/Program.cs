@@ -9,7 +9,7 @@ namespace FSC.WUF.TEST
         static void Main(string[] args)
         {
             var window = WindowManager.Create((WindowManager window) => Run(window), new Size(300, 300));
-            
+
             Application application = new Application();
             application.Run();
         }

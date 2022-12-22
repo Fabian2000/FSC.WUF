@@ -112,9 +112,33 @@ namespace FSC.WUF
 
         public async Task<string> Style(string cssProp)
         {
-            char[] cssPropChars = cssProp.ToCharArray();
-            cssPropChars[0] = char.ToLower(cssPropChars[0]);
-            return await ExecuteScript($"style.{cssProp}");
+            List<char> cssPropChars = new List<char>(cssProp.ToLower().ToCharArray());
+
+            while (cssPropChars.Contains('-'))
+            {
+                var dashPosition = cssPropChars.IndexOf('-');
+                cssPropChars.RemoveAt(dashPosition);
+                cssPropChars[dashPosition] = char.ToUpper(cssPropChars[dashPosition]);
+            }
+
+            cssProp = string.Concat(cssPropChars);
+            return await _window.ExecuteScript($"window.getComputedStyle({_js.ToString()}).{cssProp}");
+        }
+
+        public async Task Style<T>(string cssProp, T cssValue)
+        {
+            List<char> cssPropChars = new List<char>(cssProp.ToLower().ToCharArray());
+            
+            while (cssPropChars.Contains('-'))
+            {
+                var dashPosition = cssPropChars.IndexOf('-');
+                cssPropChars.RemoveAt(dashPosition);
+                cssPropChars[dashPosition] = char.ToUpper(cssPropChars[dashPosition]);
+            }
+
+            cssProp = string.Concat(cssPropChars);
+
+            await ExecuteScript($"style.{cssProp} = '{cssValue?.ToString()}'");
         }
 
         public async Task<string> Value()
