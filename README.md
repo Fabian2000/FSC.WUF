@@ -100,6 +100,7 @@ namespace FSC.WUF.TEST
 ```
 
 ## Code example Html
+This html file is a demo. Normally you should split it up into multiple html files, otherwise your file could become larger than 2 MB
 ```html
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
