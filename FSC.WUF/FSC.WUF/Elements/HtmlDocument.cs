@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -53,6 +54,11 @@ namespace FSC.WUF
             return await ExecuteScript("id");
         }
 
+        public async Task<string> Name()
+        {
+            return await ExecuteScript("name");
+        }
+
         public async Task AddClass(string className)
         {
             await ExecuteScript($"classList.add('{className}')");
@@ -68,6 +74,16 @@ namespace FSC.WUF
             var classList = await ExecuteScript("classList");
             
             return JsListToList(classList);
+        }
+
+        public async Task Remove()
+        {
+            await ExecuteScript($"remove()");
+        }
+
+        public async Task ScrollIntoView(string behavior = "smooth", string block = "center", string inline = "nearest")
+        {
+            await ExecuteScript($$"""scrollIntoView({behavior: {{behavior}}, block: {{block}}, inline: {{inline}})""");
         }
 
         public async Task InnerHtml(Html html)
