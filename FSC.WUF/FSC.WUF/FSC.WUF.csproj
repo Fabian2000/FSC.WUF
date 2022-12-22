@@ -19,6 +19,8 @@
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
+    <PackageId>FSC_WebUIFramework</PackageId>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
