@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media;
 
 namespace FSC.WUF.TEST
@@ -55,6 +56,8 @@ namespace FSC.WUF.TEST
                 var css = new Css();
                 css.Load("test.css");
                 await window.GetElement("head").Append(css);
+
+                window.OnPopup += (s, e) => Process.Start(new ProcessStartInfo(e?.Link) { UseShellExecute = true });
             };
         };
     }

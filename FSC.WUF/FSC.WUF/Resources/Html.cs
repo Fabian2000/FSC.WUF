@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace FSC.WUF
 {
@@ -64,6 +65,21 @@ namespace FSC.WUF
                             }
                         }
                     }
+
+                    if (name.Equals("a", StringComparison.OrdinalIgnoreCase))
+                    {
+                        node.Attributes.RemoveNamedItem("target");
+                        var attr = node!.OwnerDocument!.CreateAttribute("target");
+                        attr.Value = "_blank";
+                        node.Attributes.SetNamedItem(attr);
+                    }
+                }
+
+                if (name.Equals("form", StringComparison.OrdinalIgnoreCase))
+                {
+                    var attr = node!.OwnerDocument!.CreateAttribute("onsubmit");
+                    attr.Value = "return false;";
+                    node.Attributes.SetNamedItem(attr);
                 }
 
                 if (!XmlNodeCheck(node!.ChildNodes))

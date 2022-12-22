@@ -11,6 +11,7 @@ namespace FSC.WUF
     {
         private StringBuilder _js;
         private WindowManager _window;
+        private string _element;
 
         internal HtmlDocument(WindowManager window, string element, int i = -1)
         {
@@ -23,12 +24,28 @@ namespace FSC.WUF
             {
                 _js.Append($".querySelectorAll('{element}')[{i}]");
             }
+            _element = element;
             _window = window;
         }
 
         public async Task<string> TagName()
         {
             return await ExecuteScript("classList");
+        }
+
+        public async Task Play()
+        {
+            await ExecuteScript("play()");
+        }
+
+        public async Task Pause()
+        {
+            await ExecuteScript("pause()");
+        }
+
+        public async Task Load()
+        {
+            await ExecuteScript("load()");
         }
 
         public async Task<string> Id()
@@ -139,6 +156,18 @@ namespace FSC.WUF
             cssProp = string.Concat(cssPropChars);
 
             await ExecuteScript($"style.{cssProp} = '{cssValue?.ToString()}'");
+        }
+
+        public async Task<int> Count()
+        {
+            var count = await _window.ExecuteScript($"document.querySelectorAll('{_element}').length");
+            count = count?.Trim('"');
+            if (int.TryParse(count, out int result))
+            {
+                return result;
+            }
+
+            return 0;
         }
 
         public async Task<string> Value()
