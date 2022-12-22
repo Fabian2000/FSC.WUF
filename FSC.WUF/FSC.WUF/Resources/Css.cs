@@ -11,7 +11,7 @@ namespace FSC.WUF
 
             foreach (Match foundResource in findResources)
             {
-                var resLink = foundResource.Groups[1].Value;
+                var resLink = foundResource.Groups[2].Value;
                 var getName = GetSingleByNameEmbeddedResource(resLink.Replace("res://", "", StringComparison.OrdinalIgnoreCase));
 
                 if (string.IsNullOrWhiteSpace(getName))

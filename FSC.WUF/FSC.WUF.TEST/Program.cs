@@ -51,6 +51,10 @@ namespace FSC.WUF.TEST
                 {
                     MessageBox.Show("Ne, klick wo anders hin ...");
                 });
+
+                var css = new Css();
+                css.Load("test.css");
+                await window.GetElement("head").Append(css);
             };
         };
     }
