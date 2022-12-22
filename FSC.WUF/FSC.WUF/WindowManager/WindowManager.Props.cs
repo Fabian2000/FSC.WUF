@@ -6,6 +6,7 @@ namespace FSC.WUF
 {
     public sealed partial class WindowManager
     {
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
         public double ActualHeight
         {
             get => _window!.ActualHeight;
@@ -182,5 +183,6 @@ namespace FSC.WUF
             get => _window!.WindowState;
             set => _window!.WindowState = value;
         }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
     }
 }

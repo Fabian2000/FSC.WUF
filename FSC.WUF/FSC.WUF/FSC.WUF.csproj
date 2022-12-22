@@ -12,6 +12,13 @@
     <Authors>Fabian Schlüter</Authors>
     <Description>FSC.WUF Web UI Framework. A small library to write professional software with HTML and CSS.</Description>
     <Copyright>Copyright 2022 Fabian Schlüter</Copyright>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
+    <PackageReleaseNotes>First creation of this package.</PackageReleaseNotes>
+    <IncludeSymbols>False</IncludeSymbols>
+    <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +31,17 @@
     <EmbeddedResource Include="Bootstrap\bootstrap.bundle.js" />
     <EmbeddedResource Include="Bootstrap\bootstrap.css" />
     <EmbeddedResource Include="Bootstrap\fsc.wuf.api.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

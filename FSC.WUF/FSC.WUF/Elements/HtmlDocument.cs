@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FSC.WUF
 {
+    /// <summary>
+    /// HtmlDocument is a JavaScript - C# bridge
+    /// </summary>
     public class HtmlDocument
     {
         private StringBuilder _js;
@@ -29,63 +29,111 @@ namespace FSC.WUF
             _window = window;
         }
 
+        /// <summary>
+        /// Gets the TagName of an element
+        /// </summary>
+        /// <returns>Returns the TagName as a string</returns>
         public async Task<string> TagName()
         {
             return await ExecuteScript("classList");
         }
 
+        /// <summary>
+        /// Starts a Video or Audio player
+        /// </summary>
+        /// <returns></returns>
         public async Task Play()
         {
             await ExecuteScript("play()");
         }
 
+        /// <summary>
+        /// Pauses a Video or Audio player
+        /// </summary>
+        /// <returns></returns>
         public async Task Pause()
         {
             await ExecuteScript("pause()");
         }
 
+        /// <summary>
+        /// Reloads the Video or Audio player
+        /// </summary>
+        /// <returns></returns>
         public async Task Load()
         {
             await ExecuteScript("load()");
         }
 
+        /// <summary>
+        /// Gets the Id of an element
+        /// </summary>
+        /// <returns>Returns the Id as a string</returns>
         public async Task<string> Id()
         {
             return await ExecuteScript("id");
         }
 
+        /// <summary>
+        /// Gets the Name attribute of an element
+        /// </summary>
+        /// <returns>Returns the Name as a string</returns>
         public async Task<string> Name()
         {
             return await ExecuteScript("name");
         }
 
+        /// <summary>
+        /// Adds a new class to the class list
+        /// </summary>
+        /// <returns></returns>
         public async Task AddClass(string className)
         {
             await ExecuteScript($"classList.add('{className}')");
         }
 
+        /// <summary>
+        /// Removes a class from the class list
+        /// </summary>
+        /// <returns></returns>
         public async Task RemoveClass(string className)
         {
             await ExecuteScript($"classList.remove('{className}')");
         }
 
+        /// <summary>
+        /// Gets a list of all classes of an element
+        /// </summary>
+        /// <returns>Returns a string list</returns>
         public async Task<List<string>> ClassList()
         {
             var classList = await ExecuteScript("classList");
-            
+
             return JsListToList(classList);
         }
 
+        /// <summary>
+        /// Removes the element from the html viewer
+        /// </summary>
+        /// <returns></returns>
         public async Task Remove()
         {
             await ExecuteScript($"remove()");
         }
 
+        /// <summary>
+        /// Scrolls an element into the view area
+        /// </summary>
+        /// <returns></returns>
         public async Task ScrollIntoView(string behavior = "smooth", string block = "center", string inline = "nearest")
         {
             await ExecuteScript($$"""scrollIntoView({behavior: {{behavior}}, block: {{block}}, inline: {{inline}})""");
         }
 
+        /// <summary>
+        /// Adds html content into an element
+        /// </summary>
+        /// <returns></returns>
         public async Task InnerHtml(Html html)
         {
             if (!html.IsValid())
@@ -96,11 +144,19 @@ namespace FSC.WUF
             await ExecuteScript($"innerHTML = '{html.resource}'");
         }
 
+        /// <summary>
+        /// Gets the the html content of an element
+        /// </summary>
+        /// <returns>Returns the html content as a string</returns>
         public async Task<string> InnerHtml()
         {
             return await ExecuteScript($"innerHTML");
         }
 
+        /// <summary>
+        /// Similar to innerHtml, but instead of replacing the whole content of an element, it will add the new content after the last child element
+        /// </summary>
+        /// <returns></returns>
         public async Task Append(Html html)
         {
             if (!html.IsValid())
@@ -111,6 +167,10 @@ namespace FSC.WUF
             await ExecuteScript($"insertAdjacentHTML('beforeend', '{html.resource.ReplaceLineEndings("")}')");
         }
 
+        /// <summary>
+        /// Similar to innerHtml, but instead of replacing the whole content of an element, it will add the new content after the last child element
+        /// </summary>
+        /// <returns></returns>
         public async Task Append(Css css)
         {
             if (!css.IsValid())
@@ -123,6 +183,10 @@ namespace FSC.WUF
             await ExecuteScript($"""insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="{css.dataURL}">')""");
         }
 
+        /// <summary>
+        /// Similar to innerHtml, but instead of replacing the whole content of an element, it will add the new content before the first child element
+        /// </summary>
+        /// <returns></returns>
         public async Task Prepend(Html html)
         {
             if (!html.IsValid())
@@ -133,16 +197,28 @@ namespace FSC.WUF
             await ExecuteScript($"insertAdjacentHTML('afterbegin', '{html.resource.ReplaceLineEndings("")}')");
         }
 
+        /// <summary>
+        /// Inserts a text into an element
+        /// </summary>
+        /// <returns></returns>
         public async Task InnerText(string text)
         {
             await ExecuteScript($"innerText = '{text}'");
         }
 
+        /// <summary>
+        /// Gets the text from an element
+        /// </summary>
+        /// <returns>Returns the inner text as a string</returns>
         public async Task<string> InnerText()
         {
             return await ExecuteScript($"innerText");
         }
 
+        /// <summary>
+        /// Gets the style value of a css property
+        /// </summary>
+        /// <returns>Returns the style value as a string</returns>
         public async Task<string> Style(string cssProp)
         {
             List<char> cssPropChars = new List<char>(cssProp.ToLower().ToCharArray());
@@ -158,10 +234,14 @@ namespace FSC.WUF
             return await _window.ExecuteScript($"window.getComputedStyle({_js.ToString()}).{cssProp}");
         }
 
+        /// <summary>
+        /// Set a css property to a new value
+        /// </summary>
+        /// <returns></returns>
         public async Task Style<T>(string cssProp, T cssValue)
         {
             List<char> cssPropChars = new List<char>(cssProp.ToLower().ToCharArray());
-            
+
             while (cssPropChars.Contains('-'))
             {
                 var dashPosition = cssPropChars.IndexOf('-');
@@ -174,6 +254,10 @@ namespace FSC.WUF
             await ExecuteScript($"style.{cssProp} = '{cssValue?.ToString()}'");
         }
 
+        /// <summary>
+        /// Gets the amount of elements from GetElement()
+        /// </summary>
+        /// <returns>Returns a number of all elements that were found by GetElement()</returns>
         public async Task<int> Count()
         {
             var count = await _window.ExecuteScript($"document.querySelectorAll('{_element}').length");
@@ -186,11 +270,19 @@ namespace FSC.WUF
             return 0;
         }
 
+        /// <summary>
+        /// Gets the value of an element
+        /// </summary>
+        /// <returns>Returns the value as a string</returns>
         public async Task<string> Value()
         {
             return await ExecuteScript($"value");
         }
 
+        /// <summary>
+        /// Sets the value of an element
+        /// </summary>
+        /// <returns></returns>
         public async Task Value(string value)
         {
             await ExecuteScript($"value = '{value}'");
@@ -226,13 +318,24 @@ namespace FSC.WUF
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class HtmlDocumentEx
     {
+        /// <summary>
+        /// Gets an element. Similar to querySelector in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
         public static HtmlDocument GetElement(this WindowManager window, string element)
         {
             return new HtmlDocument(window, element);
         }
 
+        /// <summary>
+        /// Gets an element. Similar to querySelector/querySelectorAll in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
         public static HtmlDocument GetElement(this WindowManager window, string element, int index)
         {
             return new HtmlDocument(window, element, index);

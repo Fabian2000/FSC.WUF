@@ -3,8 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace FSC.WUF
 {
+    /// <summary>
+    /// A class to use CSS from the program resources
+    /// </summary>
     public class Css : ResourceFileManager
     {
+        /// <summary>
+        /// Checks if this css is valid for this library + updates resources links
+        /// </summary>
+        /// <returns></returns>
         public override bool IsValid()
         {
             var findResources = Regex.Matches(resource, """("|\(|,\s?)(res://.*?)("|\)|\s,)""");

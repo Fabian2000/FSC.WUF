@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace FSC.WUF
 {
+    /// <summary>
+    /// A class to use HTML from the program resources
+    /// </summary>
     public class Html : ResourceFileManager
     {
+        /// <summary>
+        /// Checks if this html is valid for this library + updates resources links
+        /// </summary>
+        /// <returns></returns>
         public override bool IsValid()
         {
             var xmlSettings = new XmlReaderSettings();

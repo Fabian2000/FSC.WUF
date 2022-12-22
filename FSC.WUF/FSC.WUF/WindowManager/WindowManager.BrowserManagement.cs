@@ -9,10 +9,23 @@ namespace FSC.WUF
     {
         private Dictionary<int, Action> _events = new Dictionary<int, Action>();
 
+        /// <summary>
+        /// This event will call after the whole program loaded
+        /// </summary>
         public event EventHandler<EventArgs>? OnLoaded;
 
+        /// <summary>
+        /// This event will call after a user clicked on a link
+        /// </summary>
         public event EventHandler<WindowManagerLinkEventArgs>? OnPopup;
 
+        /// <summary>
+        /// A c# - js bridge for events
+        /// </summary>
+        /// <param name="element">The element to choose. Similar to querySelectorAll(...)</param>
+        /// <param name="eventType">Events are for example click, load, ...</param>
+        /// <param name="callback">An action to call after the event happens</param>
+        /// <returns></returns>
         public async Task AddEventListener(string element, string eventType, Action callback)
         {
             var id = 0;
@@ -25,6 +38,13 @@ namespace FSC.WUF
             _events!.Add(id, callback);
         }
 
+        /// <summary>
+        /// A c# - js bridge for events
+        /// </summary>
+        /// <param name="element">The element to choose. Similar to querySelectorAll(...)</param>
+        /// <param name="eventType">Events are for example click, load, ...</param>
+        /// <param name="callback">An action to call after the event happens</param>
+        /// <returns></returns>
         public async Task RemoveEventListener(string element, string eventType, Action callback)
         {
             await ExecuteScript($"removeEventListener('{element}', '{eventType}')");
