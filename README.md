@@ -70,7 +70,7 @@ namespace FSC.WUF.TEST
 
             window.OnLoaded += async (s, e) =>
             {
-                await window.AddEventListener(".btn-primary", "click", async () =>
+                await window.AddEventListener(".btn-primary", "click", async (HtmlDocument element) =>
                 {
                     var input = await window.GetElement("input").Value();
                     input = input.Trim('"');
@@ -83,7 +83,7 @@ namespace FSC.WUF.TEST
                     MessageBox.Show("Hello " + input);
                 });
 
-                await window.AddEventListener(".btn-secondary", "click", () =>
+                await window.AddEventListener(".btn-secondary", "click", (HtmlDocument element) =>
                 {
                     MessageBox.Show("Please use login ...");
                 });
