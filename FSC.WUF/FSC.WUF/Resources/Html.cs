@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace FSC.WUF
 {
@@ -26,6 +27,10 @@ namespace FSC.WUF
             {
                 return false;
             }
+
+            var guidAttr = xml!.CreateAttribute("element-guid");
+            guidAttr.Value = Guid.NewGuid().ToString();
+            xml.DocumentElement.Attributes?.SetNamedItem(guidAttr);
 
             resource = xml.OuterXml;
 
@@ -85,12 +90,12 @@ namespace FSC.WUF
                 {
                     var attr = node!.OwnerDocument!.CreateAttribute("onsubmit");
                     attr.Value = "return false;";
-                    node.Attributes.SetNamedItem(attr);
+                    node.Attributes?.SetNamedItem(attr);
                 }
 
                 var guidAttr = node!.OwnerDocument!.CreateAttribute("element-guid");
-                guidAttr.Value = Guid.NewGuid();
-                node.Attributes.SetNamedItem(guidAttr);
+                guidAttr.Value = Guid.NewGuid().ToString();
+                node.Attributes?.SetNamedItem(guidAttr);
 
                 if (!XmlNodeCheck(node!.ChildNodes))
                 {

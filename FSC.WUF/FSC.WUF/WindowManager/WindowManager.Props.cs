@@ -136,7 +136,7 @@ namespace FSC.WUF
             set => _window!.ShowInTaskbar = value;
         }
 
-        public bool ShowTitle
+        public Visibility ShowTitle
         {
             get => _window!.ShowTitle;
             set => _window!.ShowTitle = value;

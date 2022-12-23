@@ -36,7 +36,7 @@ namespace FSC.WUF
                 switch (message[0])
                 {
                     case "event":
-                        _events[Convert.ToInt32(message[1])](_window.GetElement(new Guid(message[2])));
+                        _events[Convert.ToInt32(message[1])](this.GetElement(new Guid(message[2])));
                         break;
                 }
             }

@@ -41,13 +41,13 @@ namespace FSC.WUF
         /// </summary>
         /// <param name="run">If the window shows up, this action will get called</param>
         /// <param name="size">Defines the size of the window on startup</param>
-        /// <param name="opacity">Defines the opacity of the window on startup</param>
+        /// <param name="visibility">Defines the visibility of the window on startup. This feature probably doesn't hide the window from beginning. Didn't found out why, probably a bug from WPF. The only method that worked didn't supported the windows 11 rounding</param>
         /// <param name="windowStartupLocation">Sets the startup location</param>
         /// <returns></returns>
         public static WindowManager Create
         (
             Action<WindowManager> run, 
-            Size size = new Size(1080, 720), 
+            Size size = new Size(), 
             Visibility visibility = Visibility.Visible, 
             WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen
         )
@@ -55,6 +55,11 @@ namespace FSC.WUF
             var windowManager = new WindowManager();
 
             windowManager._window = new WindowTemplate(run, windowManager, () => { windowManager.EventManager(); });
+
+            if (size.IsEmpty)
+            {
+                size = new Size(1080, 720);
+            }
 
             windowManager.Height = size.Height;
             windowManager.Width = size.Width;
