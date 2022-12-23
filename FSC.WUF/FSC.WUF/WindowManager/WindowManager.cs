@@ -40,42 +40,17 @@ namespace FSC.WUF
         /// Creates a new window
         /// </summary>
         /// <param name="run">If the window shows up, this action will get called</param>
-        /// <returns></returns>
-        public static WindowManager Create(Action<WindowManager> run)
-        {
-            return Create(run, new Size(1080, 720));
-        }
-
-        /// <summary>
-        /// Creates a new window
-        /// </summary>
-        /// <param name="run">If the window shows up, this action will get called</param>
         /// <param name="size">Defines the size of the window on startup</param>
-        /// <returns></returns>
-        public static WindowManager Create(Action<WindowManager> run, Size size)
-        {
-            return Create(run, size, WindowStartupLocation.CenterOwner);
-        }
-
-        /// <summary>
-        /// Creates a new window
-        /// </summary>
-        /// <param name="run">If the window shows up, this action will get called</param>
+        /// <param name="opacity">Defines the opacity of the window on startup</param>
         /// <param name="windowStartupLocation">Sets the startup location</param>
         /// <returns></returns>
-        public static WindowManager Create(Action<WindowManager> run, WindowStartupLocation windowStartupLocation)
-        {
-            return Create(run, new Size(1080, 720), windowStartupLocation);
-        }
-
-        /// <summary>
-        /// Creates a new window
-        /// </summary>
-        /// <param name="run">If the window shows up, this action will get called</param>
-        /// <param name="size">Defines the size of the window on startup</param>
-        /// <param name="windowStartupLocation">Sets the startup location</param>
-        /// <returns></returns>
-        public static WindowManager Create(Action<WindowManager> run, Size size, WindowStartupLocation windowStartupLocation)
+        public static WindowManager Create
+        (
+            Action<WindowManager> run, 
+            Size size = new Size(1080, 720), 
+            double opacity = 1d, 
+            WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen
+        )
         {
             var windowManager = new WindowManager();
 
@@ -83,6 +58,7 @@ namespace FSC.WUF
 
             windowManager.Height = size.Height;
             windowManager.Width = size.Width;
+            windowManager.Opacity = opacity;
             windowManager.WindowStartupLocation = windowStartupLocation;
 
             windowManager.Titlebar = new WindowTitlebar();
