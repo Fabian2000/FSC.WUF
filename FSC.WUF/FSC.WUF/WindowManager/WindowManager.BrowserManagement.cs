@@ -7,7 +7,7 @@ namespace FSC.WUF
 {
     public partial class WindowManager
     {
-        private Dictionary<int, Action> _events = new Dictionary<int, Action>();
+        private Dictionary<int, Action<HtmlDocument>> _events = new Dictionary<int, Action<HtmlDocument>>();
 
         /// <summary>
         /// This event will call after the whole program loaded
@@ -26,7 +26,7 @@ namespace FSC.WUF
         /// <param name="eventType">Events are for example click, load, ...</param>
         /// <param name="callback">An action to call after the event happens</param>
         /// <returns></returns>
-        public async Task AddEventListener(string element, string eventType, Action callback)
+        public async Task AddEventListener(string element, string eventType, Action<HtmlDocument> callback)
         {
             var id = 0;
             if (_events!.Any())
@@ -45,7 +45,7 @@ namespace FSC.WUF
         /// <param name="eventType">Events are for example click, load, ...</param>
         /// <param name="callback">An action to call after the event happens</param>
         /// <returns></returns>
-        public async Task RemoveEventListener(string element, string eventType, Action callback)
+        public async Task RemoveEventListener(string element, string eventType, Action<HtmlDocument> callback)
         {
             await ExecuteScript($"removeEventListener('{element}', '{eventType}')");
             _events.Remove(

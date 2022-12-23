@@ -84,6 +84,24 @@ namespace FSC.WUF
         }
 
         /// <summary>
+        /// Gets an attribute
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> Attr(string attrName)
+        {
+            return await ExecuteScript($"getAttribute('{attrName}')");
+        }
+
+        /// <summary>
+        /// Sets an attribute
+        /// </summary>
+        /// <returns></returns>
+        public async Task Attr(string attrName, string attrValue)
+        {
+            await ExecuteScript($"setAttribute('{attrName}', '{attrValue}')");
+        }
+
+        /// <summary>
         /// Adds a new class to the class list
         /// </summary>
         /// <returns></returns>
@@ -339,6 +357,11 @@ namespace FSC.WUF
         public static HtmlDocument GetElement(this WindowManager window, string element, int index)
         {
             return new HtmlDocument(window, element, index);
+        }
+
+        internal static HtmlDocument GetElement(this WindowManager window, Guid guid)
+        {
+            return GetElement(window, $"""[element-guid="{guid}"]""");
         }
     }
 }

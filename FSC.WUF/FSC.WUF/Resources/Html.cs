@@ -88,6 +88,10 @@ namespace FSC.WUF
                     node.Attributes.SetNamedItem(attr);
                 }
 
+                var guidAttr = node!.OwnerDocument!.CreateAttribute("element-guid");
+                guidAttr.Value = Guid.NewGuid();
+                node.Attributes.SetNamedItem(guidAttr);
+
                 if (!XmlNodeCheck(node!.ChildNodes))
                 {
                     return false;
