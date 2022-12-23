@@ -36,6 +36,18 @@ namespace FSC.WUF
             }
         }
 
+        public Visibility ShowTitle
+        {
+            get
+            {
+                return titlebar.TitleBarTitle.Visibility;
+            }
+            set
+            {
+                titlebar.TitleBarTitle.Visibility = value;
+            }
+        }
+
         public new ImageSource Icon
         {
             get

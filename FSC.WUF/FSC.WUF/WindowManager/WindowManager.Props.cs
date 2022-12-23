@@ -136,6 +136,12 @@ namespace FSC.WUF
             set => _window!.ShowInTaskbar = value;
         }
 
+        public bool ShowTitle
+        {
+            get => _window!.ShowTitle;
+            set => _window!.ShowTitle = value;
+        }
+
         public TaskbarItemInfo TaskbarItemInfo
         {
             get => _window!.TaskbarItemInfo;

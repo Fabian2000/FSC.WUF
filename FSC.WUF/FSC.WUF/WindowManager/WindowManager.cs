@@ -48,7 +48,7 @@ namespace FSC.WUF
         (
             Action<WindowManager> run, 
             Size size = new Size(1080, 720), 
-            double opacity = 1d, 
+            Visibility visibility = Visibility.Visible, 
             WindowStartupLocation windowStartupLocation = WindowStartupLocation.CenterScreen
         )
         {
@@ -58,7 +58,7 @@ namespace FSC.WUF
 
             windowManager.Height = size.Height;
             windowManager.Width = size.Width;
-            windowManager.Opacity = opacity;
+            windowManager.Visibility = visibility;
             windowManager.WindowStartupLocation = windowStartupLocation;
 
             windowManager.Titlebar = new WindowTitlebar();
