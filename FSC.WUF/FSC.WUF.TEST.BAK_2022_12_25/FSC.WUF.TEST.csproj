@@ -10,14 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="WebUI\table_row.html" />
+    <None Remove="WebUI\test.css" />
+    <None Remove="WebUI\test.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="WebUI\index.html">
       <CustomToolNamespace></CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="WebUI\table_row.html" />
+    <EmbeddedResource Include="WebUI\test.css" />
+    <EmbeddedResource Include="WebUI\test.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace FSC.WUF.TEST
         [STAThread]
         static void Main(string[] args)
         {
-            var window = WindowManager.Create((WindowManager window) => Run(window), new Size(300, 300));
+            var window = WindowManager.Create((WindowManager window) => Run(window), new Size(600, 500));
 
             Application application = new Application();
             application.Run();
@@ -35,29 +35,38 @@ namespace FSC.WUF.TEST
 
             window.OnLoaded += async (s, e) =>
             {
-                await window.AddEventListener(".btn-primary", "click", async (HtmlDocument element) =>
-                {
-                    var input = await window.GetElement("input").Value();
-                    input = input.Trim('"');
+                var people = new List<Person>();
 
-                    if (string.IsNullOrWhiteSpace(input))
-                    {
-                        MessageBox.Show("Uff, gib erstmal einen Namen ein, ok? ... :/");
-                        return;
-                    }
-                    MessageBox.Show("Hallo " + input);
-                });
+                var person1 = new Person {
+                    Id = 0,
+                    FirstName = "Jack",
+                    LastName = "Exampleman",
+                    Age = 30,
+                };
 
-                await window.AddEventListener(".btn-secondary", "click", (HtmlDocument element) =>
-                {
-                    MessageBox.Show("Ne, klick wo anders hin ...");
-                });
+                var person2 = new Person {
+                    Id = 1,
+                    FirstName = "Timmy",
+                    LastName = "Lalala",
+                    Age = 16,
+                };
 
-                var css = new Css();
-                css.Load("test.css");
-                await window.GetElement("head").Append(css);
+                var person3 = new Person {
+                    Id = 2,
+                    FirstName = "Cindy",
+                    LastName = "Stone",
+                    Age = 25,
+                };
 
-                window.OnPopup += (s, e) => Process.Start(new ProcessStartInfo(e?.Link) { UseShellExecute = true });
+                people.Add(person1);
+                people.Add(person2);
+                people.Add(person3);
+
+                var html = new Html();
+                html.Load("table_row.html");
+                html.Bind(people);
+
+                await window.GetElement(".people").Append(html);
             };
         };
     }

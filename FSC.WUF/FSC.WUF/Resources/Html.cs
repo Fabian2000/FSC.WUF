@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace FSC.WUF
 {
@@ -9,6 +11,59 @@ namespace FSC.WUF
     /// </summary>
     public class Html : ResourceFileManager
     {
+        /// <summary>
+        /// Bind a class to html. Place in html @Binding->PropertyName; at the place where the information should be.
+        /// </summary>
+        /// <typeparam name="T">The class that is used to pass its properties to html</typeparam>
+        /// <param name="class">An instance of the class</param>
+        public void Bind<T>(T @class) where T : class
+        {
+            Bind(new T[] { @class });
+        }
+
+        /// <summary>
+        /// Bind a class to html. Place in html @Binding->PropertyName; at the place where the information should be. The array makes it possible to automatically duplicate one html element until the array ended
+        /// </summary>
+        /// <typeparam name="T">The class that is used to pass its properties to html</typeparam>
+        /// <param name="classes">An instance of the class</param>
+        public void Bind<T>(T[] classes) where T : class
+        {
+            Bind(new List<T>(classes));
+        }
+
+        /// <summary>
+        /// Bind a class to html. Place in html @Binding->PropertyName; at the place where the information should be. The list makes it possible to automatically duplicate one html element until the list ended
+        /// </summary>
+        /// <typeparam name="T">The class that is used to pass its properties to html</typeparam>
+        /// <param name="classes">An instance of the class</param>
+        public void Bind<T>(List<T> classes) where T : class
+        {
+            var htmlBuilder = new StringBuilder("<wuf-binding>");
+            var properties = typeof(T).GetProperties();
+            
+            foreach (var @class in classes)
+            {
+                var temp = resource;
+                foreach (var property in properties)
+                {
+                    var propForValue = @class.GetType().GetProperty(property.Name);
+                    var propVal = propForValue?.GetValue(@class)?.ToString() ?? string.Empty;
+
+                    temp = temp.Replace
+                    (
+                        $"@Binding->{property.Name};",
+                        propVal?.ToString() ?? string.Empty
+                    );
+                }
+
+                htmlBuilder.Append(temp);
+            }
+
+            htmlBuilder.AppendLine("</wuf-binding>");
+
+            resource = htmlBuilder.ToString();
+        }
+
         /// <summary>
         /// Checks if this html is valid for this library + updates resources links
         /// </summary>
@@ -33,6 +88,8 @@ namespace FSC.WUF
             xml.DocumentElement.Attributes?.SetNamedItem(guidAttr);
 
             resource = xml.OuterXml;
+            resource = resource.Replace("<wuf-binding>", string.Empty);
+            resource = resource.Replace("</wuf-binding>", string.Empty);
 
             return true;
         }

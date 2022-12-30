@@ -21,12 +21,16 @@ namespace FSC.WUF
 
             if (string.IsNullOrWhiteSpace(getName))
             {
-                throw new IOException();
+                throw new IOException("Invalid resource");
             }
 
             resource = ReadFromResource(getName);
         }
 
+        /// <summary>
+        /// Validates if something is correct or making some resource changes to make it match
+        /// </summary>
+        /// <returns></returns>
         public abstract bool IsValid();
     }
 }
