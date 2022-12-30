@@ -15,20 +15,18 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
-    <PackageReleaseNotes>Important update:
-- Added Attr() to set and get all attributes
-- Added EventListener parameter to return the target element that started the event
-- Added Visibility -&gt; Not recommended, but possible now. WPF has a little bug here ...
-- Added ShowTitle to be able to set a title without showing it. Useful, if the preview window in the taskbar should keep the title, but the window itself not
-- Changed WindowManager.Create(...) from overload to default param.</PackageReleaseNotes>
+    <PackageReleaseNotes>New years update
+Happy new year. The end of 2022 brings you a new feature as a surprise.
+Bindings. Now you kind bind a class or a list / array of the class to an html file</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
     <PackageId>FSC_WebUIFramework</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageVersion>2.0.0.0</PackageVersion>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>2.1.0.0</FileVersion>
+    <Version>2.1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
