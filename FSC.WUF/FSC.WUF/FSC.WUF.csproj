@@ -15,18 +15,16 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
-    <PackageReleaseNotes>New years update
-Happy new year. The end of 2022 brings you a new feature as a surprise.
-Bindings. Now you kind bind a class or a list / array of the class to an html file</PackageReleaseNotes>
+    <PackageReleaseNotes>The recent update introduces new features, such as a splash screen that hides the HTML loading process from the user. Furthermore, HTML can now be edited as strings, although this approach should only be used when other options are unavailable.</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
     <PackageId>FSC_WebUIFramework</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageVersion>2.1.0.0</PackageVersion>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <Version>2.1.0.0</Version>
+	<PackageVersion>2.2.0.0</PackageVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+    <Version>2.2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,6 +56,7 @@ Bindings. Now you kind bind a class or a list / array of the class to an html fi
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1462.37" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

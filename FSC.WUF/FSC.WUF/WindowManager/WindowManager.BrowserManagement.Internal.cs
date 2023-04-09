@@ -112,6 +112,9 @@ namespace FSC.WUF
             stringForEasierDebug = await ExecuteScript(importFscWufApi);
 
             OnLoaded?.Invoke(this, new EventArgs());
+
+            await Task.Delay(2_000);
+            _window!.splash.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }

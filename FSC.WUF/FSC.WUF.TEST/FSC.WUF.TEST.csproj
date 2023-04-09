@@ -7,10 +7,15 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>True</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="WebUI\table_row.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

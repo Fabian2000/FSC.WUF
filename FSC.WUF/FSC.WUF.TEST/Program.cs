@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Reflection;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace FSC.WUF.TEST
 {
@@ -31,27 +33,36 @@ namespace FSC.WUF.TEST
                 Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
             };
 
+            ImageSource? icon = GetIconFromResource("FSC.WUF.TEST.icon.ico");
+            if (icon is not null)
+            {
+                window.Icon = icon;
+            }
+
             window.Load(html);
 
             window.OnLoaded += async (s, e) =>
             {
                 var people = new List<Person>();
 
-                var person1 = new Person {
+                var person1 = new Person
+                {
                     Id = 0,
                     FirstName = "Jack",
                     LastName = "Exampleman",
                     Age = 30,
                 };
 
-                var person2 = new Person {
+                var person2 = new Person
+                {
                     Id = 1,
                     FirstName = "Timmy",
                     LastName = "Lalala",
                     Age = 16,
                 };
 
-                var person3 = new Person {
+                var person3 = new Person
+                {
                     Id = 2,
                     FirstName = "Cindy",
                     LastName = "Stone",
@@ -69,6 +80,23 @@ namespace FSC.WUF.TEST
                 await window.GetElement(".people").Append(html);
             };
         };
+
+        static ImageSource? GetIconFromResource(string ico)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var stream = assembly.GetManifestResourceStream(ico);
+
+            if (stream is not null)
+            {
+                var icon = new System.Drawing.Icon(stream);
+
+                var bitmapSource = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                return bitmapSource;
+            }
+
+            return null;
+        }
     }
 }
 

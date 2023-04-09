@@ -1,9 +1,12 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace FSC.WUF
 {
@@ -81,6 +84,17 @@ namespace FSC.WUF
 
             _events();
             _run(_windowManager);
+
+            splash.Background = _windowManager.Titlebar.Background;
+            if (_windowManager.Icon is not null)
+            {
+                splashIcon.Source = _windowManager.Icon;
+            }
+            
+            if (true)
+            {
+                
+            }
         }
 
         internal async Task<bool> InitializeAsync()
@@ -108,6 +122,12 @@ namespace FSC.WUF
 #endif
 
             return true;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            splash.Width = e.NewSize.Width;
+            splash.Height = e.NewSize.Height;
         }
     }
 }

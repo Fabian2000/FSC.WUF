@@ -12,6 +12,23 @@ namespace FSC.WUF
     public class Html : ResourceFileManager
     {
         /// <summary>
+        /// A new, but not recommend way to use html. Use the other constructor instead. This constructor is only for cases, if there is no other way to use html.
+        /// </summary>
+        /// <param name="html">A string that has to match all HTML/XML rules</param>
+        public Html(string html)
+        {
+            resource = html;
+        }
+
+        /// <summary>
+        /// A class to use HTML from the program resources
+        /// </summary>
+        public Html()
+        {
+            // Empty
+        }
+
+        /// <summary>
         /// Bind a class to html. Place in html @Binding->PropertyName; at the place where the information should be.
         /// </summary>
         /// <typeparam name="T">The class that is used to pass its properties to html</typeparam>
@@ -161,6 +178,15 @@ namespace FSC.WUF
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns the html as string. Be careful. Using this with the new string parameter constructor and the validation can slow down your application
+        /// </summary>
+        /// <returns>Returns html code as string</returns>
+        public override string ToString()
+        {
+            return resource;
         }
     }
 }

@@ -11,6 +11,7 @@
         Height="450"
         Width="800"
         Padding="2"
+        SizeChanged="Window_SizeChanged"
         >
     
     <WindowChrome.WindowChrome>
@@ -19,6 +20,9 @@
 
     <DockPanel x:Name="DockWrapper" Grid.Row="2" Panel.ZIndex="2" Loaded="DockWrapper_Loaded">
         <local:WindowTitlebarTemplate x:Name="titlebar" DockPanel.Dock="Top" />
+        <DockPanel x:Name="splash" DockPanel.Dock="Bottom">
+            <Image x:Name="splashIcon" Width="100" Height="100"></Image>
+        </DockPanel>
         <wv2:WebView2 Name="webView" Source="{Binding Url}" />
     </DockPanel>
 </Window>
