@@ -152,7 +152,7 @@ namespace FSC.WUF
         /// <summary>
         /// Gets an attribute
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns an attribute as string</returns>
         public async Task<string> Attr(string attrName)
         {
             return await ExecuteScript($"getAttribute('{attrName}')");
