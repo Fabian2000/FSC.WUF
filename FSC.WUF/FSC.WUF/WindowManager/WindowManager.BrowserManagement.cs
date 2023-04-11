@@ -26,6 +26,20 @@ namespace FSC.WUF
         /// <param name="eventType">Events are for example click, load, ...</param>
         /// <param name="callback">An action to call after the event happens</param>
         /// <returns></returns>
+        public async Task AddEventListener(HtmlDocument element, string eventType, Action<HtmlDocument> callback)
+        {
+            var attr = await element.Attr("element-guid");
+
+            await AddEventListener($"""[element-guid="{attr}"]""", eventType, callback)
+        }
+
+        /// <summary>
+        /// A c# - js bridge for events
+        /// </summary>
+        /// <param name="element">The element to choose. Similar to querySelectorAll(...)</param>
+        /// <param name="eventType">Events are for example click, load, ...</param>
+        /// <param name="callback">An action to call after the event happens</param>
+        /// <returns></returns>
         public async Task AddEventListener(string element, string eventType, Action<HtmlDocument> callback)
         {
             var id = 0;
@@ -36,6 +50,20 @@ namespace FSC.WUF
 
             await ExecuteScript($"addEventListener('{element}', '{eventType}', '{id}');");
             _events!.Add(id, callback);
+        }
+
+        /// <summary>
+        /// A c# - js bridge for events
+        /// </summary>
+        /// <param name="element">The element to choose. Similar to querySelectorAll(...)</param>
+        /// <param name="eventType">Events are for example click, load, ...</param>
+        /// <param name="callback">An action to call after the event happens</param>
+        /// <returns></returns>
+        public async Task RemoveEventListener(HtmlDocument element, string eventType, Action<HtmlDocument> callback)
+        {
+            var attr = await element.Attr("element-guid");
+
+            await RemoveEventListener($"""[element-guid="{attr}"]""", string eventType, Action<HtmlDocument> callback)
         }
 
         /// <summary>

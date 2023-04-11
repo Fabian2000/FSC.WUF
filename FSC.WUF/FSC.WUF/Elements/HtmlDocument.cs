@@ -30,11 +30,19 @@ namespace FSC.WUF
         }
 
         /// <summary>
-        /// 
+        /// Gets the parent of an element. Similar to parentElement in JavaScript
         /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
         public async Task<HtmlDocument> parentElement()
         {
-            //document.getElementById("myLI").parentElement
+            StringBuilder parentElement = new StringBuilder();
+            parentElement.Append(_js.ToString());
+            parentElement.Append(".parentElement");
+            parentElement.Append(".getAttribute('element-guid');");
+
+            var elementGuid = await _window.ExecuteScript(parentElement.ToString());
+
+            return new HtmlDocument(_window, $"""[element-guid="{elementGuid}"]""");
         }
 
         /// <summary>
