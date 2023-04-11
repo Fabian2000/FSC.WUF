@@ -30,6 +30,14 @@ namespace FSC.WUF
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public async Task<HtmlDocument> parentElement()
+        {
+            //document.getElementById("myLI").parentElement
+        }
+
+        /// <summary>
         /// Gets the TagName of an element
         /// </summary>
         /// <returns>Returns the TagName as a string</returns>
