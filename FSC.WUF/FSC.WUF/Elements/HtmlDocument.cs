@@ -74,6 +74,15 @@ namespace FSC.WUF
             return await GetOtherElementThan("previousElementSibling");
         }
 
+        /// <summary>
+        /// Gets the selected option of an element
+        /// </summary>
+        /// <returns>Returns the selected option</returns>
+        public async Task<HtmlDocument> SelectedOptions(int index)
+        {
+            return await GetOtherElementThan($"selectedOptions[{index}]");
+        }
+
         private async Task<HtmlDocument> GetOtherElementThan(string js)
         {
             StringBuilder element = new StringBuilder();
@@ -351,7 +360,7 @@ namespace FSC.WUF
         /// <returns>Returns the value as a string</returns>
         public async Task<string> Value()
         {
-            return await ExecuteScript($"value");
+            return await ExecuteScript("value");
         }
 
         /// <summary>
@@ -364,12 +373,66 @@ namespace FSC.WUF
         }
 
         /// <summary>
+        /// Gets the checked value of an element
+        /// </summary>
+        /// <returns>Returns the value</returns>
+        public async Task<bool> Checked()
+        {
+            return await ExecuteScript("checked") == "true";
+        }
+
+        /// <summary>
+        /// Sets the checked value of an element
+        /// </summary>
+        /// <returns></returns>
+        public async Task Checked(bool value)
+        {
+            await ExecuteScript($"checked = '{value ? "true" : "false"}'");
+        }
+
+        /// <summary>
+        /// Gets the disabled status of an element
+        /// </summary>
+        /// <returns>Returns the status</returns>
+        public async Task<bool> Disabled()
+        {
+            return await ExecuteScript("disabled") == "true";
+        }
+
+        /// <summary>
+        /// Sets the disabled status of an element
+        /// </summary>
+        /// <returns></returns>
+        public async Task Disabled(bool value)
+        {
+            await ExecuteScript($"disabled = '{value ? "true" : "false"}'");
+        }
+
+        /// <summary>
+        /// Gets the readonly status of an element
+        /// </summary>
+        /// <returns>Returns the status</returns>
+        public async Task<bool> Readonly()
+        {
+            return await ExecuteScript("readonly") == "true";
+        }
+
+        /// <summary>
+        /// Sets the readonly status of an element
+        /// </summary>
+        /// <returns></returns>
+        public async Task Readonly(bool value)
+        {
+            await ExecuteScript($"readonly = '{value ? "true" : "false"}'");
+        }
+
+        /// <summary>
         /// Gets the scroll height of an element
         /// </summary>
         /// <returns>Returns the scrollHeight</returns>
         public async Task<int> ScrollHeight()
         {
-            return await Convert.ToInt32(ExecuteScript($"scrollHeight"));
+            return await Convert.ToInt32(ExecuteScript("scrollHeight"));
         }
 
         /// <summary>
@@ -396,7 +459,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollTop</returns>
         public async Task<int> ScrollTop()
         {
-            await Convert.ToInt32(ExecuteScript($"scrollTop"));
+            await Convert.ToInt32(ExecuteScript("scrollTop"));
         }
 
         /// <summary>
@@ -405,7 +468,7 @@ namespace FSC.WUF
         /// <returns>Returns the clientHeight</returns>
         public async Task<int> ClientHeight()
         {
-            return await Convert.ToInt32(ExecuteScript($"clientHeight"));
+            return await Convert.ToInt32(ExecuteScript("clientHeight"));
         }
 
         /// <summary>
@@ -414,7 +477,7 @@ namespace FSC.WUF
         /// <returns>Returns the clientWidth</returns>
         public async Task<int> ClientWidth()
         {
-            return await Convert.ToInt32(ExecuteScript($"clientWidth"));
+            return await Convert.ToInt32(ExecuteScript("clientWidth"));
         }
 
         /// <summary>
@@ -432,7 +495,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollLeft</returns>
         public async Task<int> ScrollLeft()
         {
-            return await Convert.ToInt32(ExecuteScript($"scrollLeft"));
+            return await Convert.ToInt32(ExecuteScript("scrollLeft"));
         }
 
         /// <summary>
@@ -441,7 +504,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Focus()
         {
-            await ExecuteScript($"focus();");
+            await ExecuteScript("focus();");
         }
 
         /// <summary>
@@ -450,7 +513,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Click()
         {
-            await ExecuteScript($"click();");
+            await ExecuteScript("click();");
         }
 
         private Task<string> ExecuteScript(string scriptAttachment)
