@@ -33,14 +33,55 @@ namespace FSC.WUF
         /// Gets the parent of an element. Similar to parentElement in JavaScript
         /// </summary>
         /// <returns>Returns a new HtmlDocument</returns>
-        public async Task<HtmlDocument> parentElement()
+        public async Task<HtmlDocument> ParentElement()
         {
-            StringBuilder parentElement = new StringBuilder();
-            parentElement.Append(_js.ToString());
-            parentElement.Append(".parentElement");
-            parentElement.Append(".getAttribute('element-guid');");
+            return await GetOtherElementThan("parentElement");
+        }
 
-            var elementGuid = await _window.ExecuteScript(parentElement.ToString());
+        /// <summary>
+        /// Gets the first child element of an element. Similar to firstElementChild in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
+        public async Task<HtmlDocument> FirstElementChild()
+        {
+            return await GetOtherElementThan("firstElementChild");
+        }
+
+        /// <summary>
+        /// Gets the last child element of an element. Similar to lastElementChild in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
+        public async Task<HtmlDocument> LastElementChild()
+        {
+            return await GetOtherElementThan("lastElementChild");
+        }
+
+        /// <summary>
+        /// Gets the element after the element. Similar to nextElementSibling in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
+        public async Task<HtmlDocument> NextElementSibling()
+        {
+            return await GetOtherElementThan("nextElementSibling");
+        }
+
+        /// <summary>
+        /// Gets the element before the element. Similar to previousElementSibling in JavaScript
+        /// </summary>
+        /// <returns>Returns a new HtmlDocument</returns>
+        public async Task<HtmlDocument> PreviousElementSibling()
+        {
+            return await GetOtherElementThan("previousElementSibling");
+        }
+
+        private async Task<HtmlDocument> GetOtherElementThan(string js)
+        {
+            StringBuilder element = new StringBuilder();
+            element.Append(_js.ToString());
+            element.Append($".{js}");
+            element.Append(".getAttribute('element-guid');");
+
+            var elementGuid = await _window.ExecuteScript(element.ToString());
 
             return new HtmlDocument(_window, $"""[element-guid="{elementGuid}"]""");
         }
@@ -320,6 +361,96 @@ namespace FSC.WUF
         public async Task Value(string value)
         {
             await ExecuteScript($"value = '{value}'");
+        }
+
+        /// <summary>
+        /// Gets the scroll height of an element
+        /// </summary>
+        /// <returns>Returns the scrollHeight</returns>
+        public async Task<int> ScrollHeight()
+        {
+            return await Convert.ToInt32(ExecuteScript($"scrollHeight"));
+        }
+
+        /// <summary>
+        /// Gets the scroll width of an element
+        /// </summary>
+        /// <returns>Returns the scrollWidth</returns>
+        public async Task<int> ScrollWidth()
+        {
+            return await Convert.ToInt32(ExecuteScript(".scrollWidth"));
+        }
+
+        /// <summary>
+        /// Sets the scroll position of an element vertically
+        /// </summary>
+        /// <returns></returns>
+        public async Task ScrollTop(int value)
+        {
+            await ExecuteScript($"scrollTop = '{value.ToString()}'");
+        }
+
+        /// <summary>
+        /// Sets the scroll position of an element vertically
+        /// </summary>
+        /// <returns>Returns the scrollTop</returns>
+        public async Task<int> ScrollTop()
+        {
+            await Convert.ToInt32(ExecuteScript($"scrollTop"));
+        }
+
+        /// <summary>
+        /// Gets the client height of an element
+        /// </summary>
+        /// <returns>Returns the clientHeight</returns>
+        public async Task<int> ClientHeight()
+        {
+            return await Convert.ToInt32(ExecuteScript($"clientHeight"));
+        }
+
+        /// <summary>
+        /// Gets the client width of an element
+        /// </summary>
+        /// <returns>Returns the clientWidth</returns>
+        public async Task<int> ClientWidth()
+        {
+            return await Convert.ToInt32(ExecuteScript($"clientWidth"));
+        }
+
+        /// <summary>
+        /// Sets the scroll position of an element horizontally
+        /// </summary>
+        /// <returns></returns>
+        public async Task ScrollLeft(int value)
+        {
+            await ExecuteScript($"scrollLeft = '{value.ToString()}'");
+        }
+
+        /// <summary>
+        /// Gets the scroll position of an element horizontally
+        /// </summary>
+        /// <returns>Returns the scrollLeft</returns>
+        public async Task<int> ScrollLeft()
+        {
+            return await Convert.ToInt32(ExecuteScript($"scrollLeft"));
+        }
+
+        /// <summary>
+        /// Sets the focus to an element
+        /// </summary>
+        /// <returns></returns>
+        public async Task Focus()
+        {
+            await ExecuteScript($"focus();");
+        }
+
+        /// <summary>
+        /// Performs a click to an element
+        /// </summary>
+        /// <returns></returns>
+        public async Task Click()
+        {
+            await ExecuteScript($"click();");
         }
 
         private Task<string> ExecuteScript(string scriptAttachment)
