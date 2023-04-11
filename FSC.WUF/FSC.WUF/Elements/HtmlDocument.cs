@@ -164,6 +164,17 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Attr(string attrName, string attrValue)
         {
+            if (attrValue.StartsWith("res://", System.StringComparison.OrdinalIgnoreCase))
+            {
+                Html html = new Html();
+                var getName = html.GetSingleByNameEmbeddedResource(attrValue.Replace("res://", "", StringComparison.OrdinalIgnoreCase));
+
+                if (!string.IsNullOrWhiteSpace(getName))
+                {
+                    attrValue = html.ReadResourceAsDataURL(getName);
+                }
+            }
+
             await ExecuteScript($"setAttribute('{attrName}', '{attrValue}')");
         }
 
