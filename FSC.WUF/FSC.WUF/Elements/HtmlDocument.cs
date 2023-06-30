@@ -398,7 +398,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Checked(bool value)
         {
-            await ExecuteScript($"checked = '{value ? "true" : "false"}'");
+            await ExecuteScript($"checked = '{(value ? "true" : "false")}'");
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Disabled(bool value)
         {
-            await ExecuteScript($"disabled = '{value ? "true" : "false"}'");
+            await ExecuteScript($"disabled = '{(value ? "true" : "false")}'");
         }
 
         /// <summary>
@@ -434,7 +434,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Readonly(bool value)
         {
-            await ExecuteScript($"readonly = '{value ? "true" : "false"}'");
+            await ExecuteScript($"readonly = '{(value ? "true" : "false")}'");
         }
 
         /// <summary>
@@ -443,7 +443,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollHeight</returns>
         public async Task<int> ScrollHeight()
         {
-            return await Convert.ToInt32(ExecuteScript("scrollHeight"));
+            return Convert.ToInt32(await ExecuteScript("scrollHeight"));
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollWidth</returns>
         public async Task<int> ScrollWidth()
         {
-            return await Convert.ToInt32(ExecuteScript(".scrollWidth"));
+            return Convert.ToInt32(await ExecuteScript(".scrollWidth"));
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollTop</returns>
         public async Task<int> ScrollTop()
         {
-            await Convert.ToInt32(ExecuteScript("scrollTop"));
+            return Convert.ToInt32(await ExecuteScript("scrollTop"));
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace FSC.WUF
         /// <returns>Returns the clientHeight</returns>
         public async Task<int> ClientHeight()
         {
-            return await Convert.ToInt32(ExecuteScript("clientHeight"));
+            return Convert.ToInt32(await ExecuteScript("clientHeight"));
         }
 
         /// <summary>
@@ -488,7 +488,7 @@ namespace FSC.WUF
         /// <returns>Returns the clientWidth</returns>
         public async Task<int> ClientWidth()
         {
-            return await Convert.ToInt32(ExecuteScript("clientWidth"));
+            return Convert.ToInt32(await ExecuteScript("clientWidth"));
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollLeft</returns>
         public async Task<int> ScrollLeft()
         {
-            return await Convert.ToInt32(ExecuteScript("scrollLeft"));
+            return Convert.ToInt32(await ExecuteScript("scrollLeft"));
         }
 
         /// <summary>

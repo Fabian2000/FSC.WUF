@@ -30,7 +30,7 @@ namespace FSC.WUF
         {
             var attr = await element.Attr("element-guid");
 
-            await AddEventListener($"""[element-guid="{attr}"]""", eventType, callback)
+            await AddEventListener($"""[element-guid="{attr}"]""", eventType, callback);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace FSC.WUF
         {
             var attr = await element.Attr("element-guid");
 
-            await RemoveEventListener($"""[element-guid="{attr}"]""", string eventType, Action<HtmlDocument> callback)
+            await RemoveEventListener($"""[element-guid="{attr}"]""", eventType, callback);
         }
 
         /// <summary>
