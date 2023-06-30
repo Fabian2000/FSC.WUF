@@ -11,11 +11,11 @@
     <Title>$(AssemblyName)</Title>
     <Authors>Fabian Schlüter</Authors>
     <Description>FSC.WUF Web UI Framework. A small library to write professional software with HTML and CSS.</Description>
-    <Copyright>Copyright 2022 Fabian Schlüter</Copyright>
+    <Copyright>Copyright 2023 Fabian Schlüter</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
-    <PackageReleaseNotes>The recent update introduces new features, such as a splash screen that hides the HTML loading process from the user. Furthermore, HTML can now be edited as strings, although this approach should only be used when other options are unavailable.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added some new methods for the HTMLDocument class like scroll, height, width and more</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
