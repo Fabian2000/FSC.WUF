@@ -27,7 +27,7 @@ namespace FSC.WUF
                 _window!.titlebar.Background = value.Background ?? windowTitlebar.Background;
                 _window!.titlebar.Foreground = value.Foreground ?? windowTitlebar.Foreground;
                 _window!.titlebar.Visibility = value.Enabled ? Visibility.Visible : Visibility.Collapsed;
-                _window!.titlebar.MaximizeButton.IsEnabled = !value.DisableMaximize;
+                _window!.titlebar.MaximizeButton.Visibility = !value.DisableMaximize ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -71,6 +71,15 @@ namespace FSC.WUF
             windowManager._window.Show();
 
             return windowManager;
+        }
+
+        /// <summary>
+        /// Invokes an action for the window thread
+        /// </summary>
+        /// <param name="action"></param>
+        public void Invoke(Action action)
+        {
+            _window!.Dispatcher.Invoke(action);
         }
 
         /// <summary>

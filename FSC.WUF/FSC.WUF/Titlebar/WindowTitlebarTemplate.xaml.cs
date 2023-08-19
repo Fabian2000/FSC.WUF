@@ -125,6 +125,11 @@ namespace FSC.WUF
         {
             Window parentWindow = Window.GetWindow(this.Parent);
 
+            if (RestoreButton.Visibility != Visibility.Visible && MaximizeButton.Visibility != Visibility.Visible)
+            {
+                return;
+            }
+
             if (parentWindow.WindowState == WindowState.Maximized)
             {
                 parentWindow.Padding = new Thickness(0);

@@ -26,5 +26,8 @@ removeEventListener = (element, eventType) => {
 
 runEvent = (e) => {
     //window.chrome.webview.postMessage(`event:${idCollection[e.target]}`);
-    window.chrome.webview.postMessage(`event:${e.target.getAttribute(`${e.type}event`)}:${e.target.getAttribute('element-guid')}`);
+    let share = `event:${e.currentTarget.getAttribute(`${e.type}event`)}:${e.currentTarget.getAttribute('element-guid')}`;
+    console.log(share);
+    console.log(e.currentTarget);
+    window.chrome.webview.postMessage(share);
 }
