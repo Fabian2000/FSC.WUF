@@ -30,11 +30,7 @@ namespace FSC.WUF
         {
             var attr = await element.Attr("element-guid");
 
-<<<<<<< Updated upstream
-            await AddEventListener($"""[element-guid="{attr}"]""", eventType, callback);
-=======
             await AddEventListener($"[element-guid={attr}]", eventType, callback);
->>>>>>> Stashed changes
         }
 
         /// <summary>
@@ -67,11 +63,7 @@ namespace FSC.WUF
         {
             var attr = await element.Attr("element-guid");
 
-<<<<<<< Updated upstream
-            await RemoveEventListener($"""[element-guid="{attr}"]""", eventType, callback);
-=======
             await RemoveEventListener($"[element-guid={attr}]", eventType, callback);
->>>>>>> Stashed changes
         }
 
         /// <summary>

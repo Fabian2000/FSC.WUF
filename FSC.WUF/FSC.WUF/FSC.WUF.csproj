@@ -15,16 +15,16 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
-    <PackageReleaseNotes>Added some new methods for the HTMLDocument class like scroll, height, width and more</PackageReleaseNotes>
+    <PackageReleaseNotes>Bug fixes and improvements</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
     <PackageId>FSC_WebUIFramework</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageVersion>2.3.0.0</PackageVersion>
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
-    <FileVersion>2.3.0.0</FileVersion>
-    <Version>2.3.0.0</Version>
+	<PackageVersion>2.3.1.0</PackageVersion>
+    <AssemblyVersion>2.3.1.0</AssemblyVersion>
+    <FileVersion>2.3.1.0</FileVersion>
+    <Version>2.3.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
