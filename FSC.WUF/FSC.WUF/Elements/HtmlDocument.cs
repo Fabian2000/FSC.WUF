@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FSC.WUF.Elements;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +15,16 @@ namespace FSC.WUF
         private WindowManager _window;
         private string _element;
 
-        internal HtmlDocument(WindowManager window, string element, int i = -1)
+        internal HtmlDocument(WindowManager window, JsString element, int i = -1)
         {
             _js = new StringBuilder("document");
             if (i == -1)
             {
-                _js.Append($".querySelector('{element}')");
+                _js.Append($".querySelector({element})");
             }
             else
             {
-                _js.Append($".querySelectorAll('{element}')[{i}]");
+                _js.Append($".querySelectorAll({element})[{i}]");
             }
             _element = element;
             _window = window;
@@ -153,21 +154,21 @@ namespace FSC.WUF
         /// Gets an attribute
         /// </summary>
         /// <returns>Returns an attribute as string</returns>
-        public async Task<string> Attr(string attrName)
+        public async Task<string> Attr(JsString attrName)
         {
-            return await ExecuteScript($"getAttribute('{attrName}')");
+            return await ExecuteScript($"getAttribute({attrName})");
         }
 
         /// <summary>
         /// Sets an attribute
         /// </summary>
         /// <returns></returns>
-        public async Task Attr(string attrName, string attrValue)
+        public async Task Attr(JsString attrName, JsString attrValue)
         {
-            if (attrValue.StartsWith("res://", System.StringComparison.OrdinalIgnoreCase))
+            if (((string)attrValue).StartsWith("res://", System.StringComparison.OrdinalIgnoreCase))
             {
                 Html html = new Html();
-                var getName = html.GetSingleByNameEmbeddedResource(attrValue.Replace("res://", "", StringComparison.OrdinalIgnoreCase));
+                var getName = html.GetSingleByNameEmbeddedResource(((string)attrValue).Replace("res://", "", StringComparison.OrdinalIgnoreCase));
 
                 if (!string.IsNullOrWhiteSpace(getName))
                 {
@@ -175,25 +176,25 @@ namespace FSC.WUF
                 }
             }
 
-            await ExecuteScript($"setAttribute('{attrName}', '{attrValue}')");
+            await ExecuteScript($"setAttribute({attrName}, {attrValue})");
         }
 
         /// <summary>
         /// Adds a new class to the class list
         /// </summary>
         /// <returns></returns>
-        public async Task AddClass(string className)
+        public async Task AddClass(JsString className)
         {
-            await ExecuteScript($"classList.add('{className}')");
+            await ExecuteScript($"classList.add({className})");
         }
 
         /// <summary>
         /// Removes a class from the class list
         /// </summary>
         /// <returns></returns>
-        public async Task RemoveClass(string className)
+        public async Task RemoveClass(JsString className)
         {
-            await ExecuteScript($"classList.remove('{className}')");
+            await ExecuteScript($"classList.remove({className})");
         }
 
         /// <summary>
@@ -218,10 +219,26 @@ namespace FSC.WUF
 
         /// <summary>
         /// Scrolls an element into the view area
+        /// Default values (if null) are automatically: behavior = smooth, block = center, inline = nearest
         /// </summary>
         /// <returns></returns>
-        public async Task ScrollIntoView(string behavior = "smooth", string block = "center", string inline = "nearest")
+        public async Task ScrollIntoView(JsString? behavior = null, JsString? block = null, JsString? inline = null)
         {
+            if (behavior is null)
+            {
+                behavior = "smooth";
+            }
+
+            if (block is null)
+            {
+                block = "center";
+            }
+
+            if (inline is null)
+            {
+                inline = "nearest";
+            }
+
             await ExecuteScript($$"""scrollIntoView({behavior: {{behavior}}, block: {{block}}, inline: {{inline}})""");
         }
 
@@ -236,7 +253,9 @@ namespace FSC.WUF
                 throw new Exception("Invalid html");
             }
 
-            await ExecuteScript($"innerHTML = '{html.resource}'");
+            JsString injectionSafeHtml = html.resource;
+
+            await ExecuteScript($"innerHTML = {injectionSafeHtml}");
         }
 
         /// <summary>
@@ -259,7 +278,9 @@ namespace FSC.WUF
                 throw new Exception("Invalid html");
             }
 
-            await ExecuteScript($"insertAdjacentHTML('beforeend', '{html.resource.ReplaceLineEndings("")}')");
+            JsString injectionSafeHtml = html.resource;
+
+            await ExecuteScript($"insertAdjacentHTML('beforeend', {((string)injectionSafeHtml).ReplaceLineEndings("")})");
         }
 
         /// <summary>
@@ -289,16 +310,18 @@ namespace FSC.WUF
                 throw new Exception("Invalid html");
             }
 
-            await ExecuteScript($"insertAdjacentHTML('afterbegin', '{html.resource.ReplaceLineEndings("")}')");
+            JsString injectionSafeHtml = html.resource;
+
+            await ExecuteScript($"insertAdjacentHTML('afterbegin', {((string)injectionSafeHtml).ReplaceLineEndings("")})");
         }
 
         /// <summary>
         /// Inserts a text into an element
         /// </summary>
         /// <returns></returns>
-        public async Task InnerText(string text)
+        public async Task InnerText(JsString text)
         {
-            await ExecuteScript($"innerText = '{text}'");
+            await ExecuteScript($"innerText = {text}");
         }
 
         /// <summary>
@@ -326,16 +349,17 @@ namespace FSC.WUF
             }
 
             cssProp = string.Concat(cssPropChars);
-            return await _window.ExecuteScript($"window.getComputedStyle({_js.ToString()}).{cssProp}");
+
+            return await _window.ExecuteScript($"window.getComputedStyle({_js}).{cssProp}");
         }
 
         /// <summary>
         /// Set a css property to a new value
         /// </summary>
         /// <returns></returns>
-        public async Task Style<T>(string cssProp, T cssValue)
+        public async Task Style<T>(JsString cssProp, T cssValue)
         {
-            List<char> cssPropChars = new List<char>(cssProp.ToLower().ToCharArray());
+            List<char> cssPropChars = new List<char>(((string)cssProp).ToLower().ToCharArray());
 
             while (cssPropChars.Contains('-'))
             {
@@ -346,7 +370,9 @@ namespace FSC.WUF
 
             cssProp = string.Concat(cssPropChars);
 
-            await ExecuteScript($"style.{cssProp} = '{cssValue?.ToString()}'");
+            JsString injectionSafeCssValue = cssValue?.ToString() ?? string.Empty;
+
+            await ExecuteScript($"style.{cssProp} = {injectionSafeCssValue}");
         }
 
         /// <summary>
@@ -378,9 +404,9 @@ namespace FSC.WUF
         /// Sets the value of an element
         /// </summary>
         /// <returns></returns>
-        public async Task Value(string value)
+        public async Task Value(JsString value)
         {
-            await ExecuteScript($"value = '{value}'");
+            await ExecuteScript($"value = {value}");
         }
 
         /// <summary>
@@ -461,7 +487,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task ScrollTop(int value)
         {
-            await ExecuteScript($"scrollTop = '{value.ToString()}'");
+            await ExecuteScript($"scrollTop = '{value}'");
         }
 
         /// <summary>
@@ -497,7 +523,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task ScrollLeft(int value)
         {
-            await ExecuteScript($"scrollLeft = '{value.ToString()}'");
+            await ExecuteScript($"scrollLeft = '{value}'");
         }
 
         /// <summary>
@@ -529,7 +555,7 @@ namespace FSC.WUF
 
         private Task<string> ExecuteScript(string scriptAttachment)
         {
-            return _window.ExecuteScript($"{_js.ToString()}.{scriptAttachment};");
+            return _window.ExecuteScript($"{_js}.{scriptAttachment};");
         }
 
         private List<string> JsListToList(string jsList)
@@ -566,7 +592,7 @@ namespace FSC.WUF
         /// Gets an element. Similar to querySelector in JavaScript
         /// </summary>
         /// <returns>Returns a new HtmlDocument</returns>
-        public static HtmlDocument GetElement(this WindowManager window, string element)
+        public static HtmlDocument GetElement(this WindowManager window, JsString element)
         {
             return new HtmlDocument(window, element);
         }
@@ -575,7 +601,7 @@ namespace FSC.WUF
         /// Gets an element. Similar to querySelector/querySelectorAll in JavaScript
         /// </summary>
         /// <returns>Returns a new HtmlDocument</returns>
-        public static HtmlDocument GetElement(this WindowManager window, string element, int index)
+        public static HtmlDocument GetElement(this WindowManager window, JsString element, int index)
         {
             return new HtmlDocument(window, element, index);
         }

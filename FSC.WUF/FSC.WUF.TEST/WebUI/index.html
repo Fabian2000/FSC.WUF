@@ -15,7 +15,14 @@
                 </tr>
             </thead>
             <tbody class="people">
-                
+                <foreach from="GetPeople" as="person">
+                    <tr>
+                        <th scope="row">@Binding->person.Id;</th>
+                        <td>@Binding->person.FirstName;</td>
+                        <td>@Binding->person.LastName;</td>
+                        <td>@Binding->person.Age;</td>
+                    </tr>
+                </foreach>
             </tbody>
         </table>
     </body>

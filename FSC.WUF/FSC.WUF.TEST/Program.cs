@@ -43,39 +43,40 @@ namespace FSC.WUF.TEST
 
             window.OnLoaded += async (s, e) =>
             {
-                var people = new List<Person>();
+                //var people = new List<Person>();
 
-                var person1 = new Person
-                {
-                    Id = 0,
-                    FirstName = "Jack",
-                    LastName = "Exampleman",
-                    Age = 30,
-                };
+                //var person1 = new Person
+                //{
+                //    Id = 0,
+                //    FirstName = "Jack🤔",
+                //    LastName = "Exampleman",
+                //    Age = 30,
+                //};
 
-                var person2 = new Person
-                {
-                    Id = 1,
-                    FirstName = "Timmy",
-                    LastName = "Lalala",
-                    Age = 16,
-                };
+                //var person2 = new Person
+                //{
+                //    Id = 1,
+                //    FirstName = "Timmy",
+                //    LastName = "Lalala",
+                //    Age = 16,
+                //};
 
-                var person3 = new Person
-                {
-                    Id = 2,
-                    FirstName = "Cindy",
-                    LastName = "Stone",
-                    Age = 25,
-                };
+                //var person3 = new Person
+                //{
+                //    Id = 2,
+                //    FirstName = "Cindy",
+                //    LastName = "Stone",
+                //    Age = 25,
+                //};
 
-                people.Add(person1);
-                people.Add(person2);
-                people.Add(person3);
+                //people.Add(person1);
+                //people.Add(person2);
+                //people.Add(person3);
 
                 var html = new Html();
                 html.Load("table_row.html");
-                html.Bind(people);
+                //html.Bind(people);
+                html.ForEachBinding(new People());
 
                 await window.GetElement(".people").Append(html);
             };

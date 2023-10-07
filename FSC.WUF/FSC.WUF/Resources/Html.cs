@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace FSC.WUF
@@ -178,6 +182,210 @@ namespace FSC.WUF
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Bind a class to html. Place in html @Binding->PropertyName; at the place where the information should be.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance of your class with the binding (If fail, make it public))</param>
+        public void ForEachBinding<T>(T instance) where T : class
+        {
+            var xmlSettings = new XmlReaderSettings();
+            xmlSettings.Async = true;
+            xmlSettings.IgnoreComments = true;
+            xmlSettings.DtdProcessing = DtdProcessing.Ignore;
+
+            var xml = new XmlDocument();
+            xml.LoadXml(resource);
+
+            var foreachNodes = xml.SelectNodes("//foreach[@as and @from]");
+
+            if (foreachNodes is null)
+            {
+                return;
+            }
+
+            foreach (XmlNode foreachNode in foreachNodes)
+            {
+                string? asValue = foreachNode.Attributes?["as"]?.Value;
+                string? fromValue = foreachNode.Attributes?["from"]?.Value;
+
+                MemberInfo[] members = instance.GetType().GetMembers();
+
+                dynamic? realFromValue = null;
+
+                foreach (var member in members)
+                {
+                    switch (member)
+                    {
+                        case FieldInfo field:
+                            realFromValue = ((FieldInfo)member).GetValue(instance);
+                            break;
+
+                        case PropertyInfo property:
+                            realFromValue = ((PropertyInfo)member).GetValue(instance);
+                            break;
+
+                        default:
+                            throw new InvalidOperationException($"Unknown member: {member.MemberType}");
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(asValue) || string.IsNullOrWhiteSpace(fromValue) || realFromValue is null)
+                {
+                    continue;
+                }
+
+                foreach (dynamic realValue in realFromValue)
+                {
+                    foreach (var node in FindAllNodesAndSubNodes(foreachNode))
+                    {
+                        if (node.Attributes is not null)
+                        {
+                            foreach (XmlAttribute attribut in node.Attributes)
+                            {
+                                attribut.Value = MapItemToForEachBinding(realValue, asValue, attribut.Value);
+                            }
+                        }
+
+                        node.InnerText = MapItemToForEachBinding(realValue, asValue, node.InnerText);
+                    }
+                }
+
+                var parent = foreachNode.ParentNode;
+
+                if (parent is null)
+                {
+                    continue;
+                }
+
+                foreach (XmlNode node in foreachNode.ChildNodes)
+                {
+                    parent.InsertAfter(node, foreachNode);
+                }
+
+                parent.RemoveChild(foreachNode);
+            }
+
+            resource = xml.OuterXml;
+        }
+
+        private List<XmlNode> FindAllNodesAndSubNodes(XmlNode node)
+        {
+            var nodes = new List<XmlNode>();
+
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.HasChildNodes)
+                {
+                    nodes.AddRange(FindAllNodesAndSubNodes(childNode));
+                }
+
+                if (childNode.Name.Equals("foreach", StringComparison.OrdinalIgnoreCase))
+                {
+                    nodes.Add(childNode);
+                }
+            }
+
+            return nodes;
+        }
+
+        private string MapItemToForEachBinding(dynamic? item, string asValue, string content)
+        {
+            string result = Regex.Replace(content, $@"@Binding->{asValue}\.(.*?);", (match) =>
+            {
+                string? value = match.Groups[1].Value;
+                
+                if (value is null)
+                {
+                    return match.Value;
+                }
+
+                string[] values = value.Split('.');
+
+                foreach (var val in values)
+                {
+                    if (item is null)
+                    {
+                        return string.Empty;
+                    }
+
+                    if (!val.EndsWith("]"))
+                    {
+                        MemberInfo[] members = item.GetType().GetMembers();
+                        MemberInfo? member = members.FirstOrDefault(x => x.Name.Equals(val, StringComparison.OrdinalIgnoreCase));
+
+                        if (member is null)
+                        {
+                            return match.Value;
+                        }
+
+                        switch (member)
+                        {
+                            case FieldInfo field:
+                                item = Convert.ChangeType(((FieldInfo)member).GetValue(val), member.GetType());
+                                break;
+
+                            case PropertyInfo property:
+                                item = Convert.ChangeType(((PropertyInfo)member).GetValue(val), member.GetType());
+                                break;
+
+                            default:
+                                return match.Value;
+                        }
+                    }
+                    else
+                    {
+                        string val2 = val.Split('[')[0];
+                        string index = val.Split('[')[1].Split(']')[0];
+
+                        MemberInfo[] members = item.GetType().GetMembers();
+                        MemberInfo? member = members.FirstOrDefault(x => x.Name.Equals(val, StringComparison.OrdinalIgnoreCase));
+
+                        if (member is null)
+                        {
+                            return match.Value;
+                        }
+
+                        switch (member)
+                        {
+                            case FieldInfo field:
+                                item = Convert.ChangeType(((FieldInfo)member).GetValue(val), member.GetType());
+                                break;
+
+                            case PropertyInfo property:
+                                item = Convert.ChangeType(((PropertyInfo)member).GetValue(val), member.GetType());
+                                break;
+
+                            default:
+                                return match.Value;
+                        }
+
+                        if (item is null)
+                        {
+                            return string.Empty;
+                        }
+
+                        if (int.TryParse(index, out int indexInt))
+                        {
+                            item = item[indexInt];
+                        }
+                        else if (index.StartsWith(@"""") && index.EndsWith(@""""))
+                        {
+                            item = item[index.Replace(@"""", string.Empty)];
+                        }
+                        else
+                        {
+                            return match.Value;
+                        }
+                    }
+                }
+
+                return string.Empty;
+            });
+
+            return item?.ToString() ?? content;
         }
 
         /// <summary>
