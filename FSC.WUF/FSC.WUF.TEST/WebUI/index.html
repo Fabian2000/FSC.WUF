@@ -17,7 +17,7 @@
             <tbody class="people">
                 <foreach from="GetPeople" as="person">
                     <tr>
-                        <th scope="row">@Binding->person.Id;</th>
+                        <th scope="row">@Binding->person.Id[0];</th>
                         <td>@Binding->person.FirstName;</td>
                         <td>@Binding->person.LastName;</td>
                         <td>@Binding->person.Age;</td>

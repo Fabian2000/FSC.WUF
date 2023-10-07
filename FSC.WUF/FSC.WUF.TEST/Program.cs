@@ -21,6 +21,7 @@ namespace FSC.WUF.TEST
         {
             var html = new Html();
             html.Load("index.html");
+            html.ForEachBinding(new People());
 
             window.ShowIcon = Visibility.Collapsed;
             window.ResizeMode = ResizeMode.CanResize;
@@ -73,12 +74,11 @@ namespace FSC.WUF.TEST
                 //people.Add(person2);
                 //people.Add(person3);
 
-                var html = new Html();
-                html.Load("table_row.html");
+                //var html = new Html();
+                //html.Load("table_row.html");
                 //html.Bind(people);
-                html.ForEachBinding(new People());
 
-                await window.GetElement(".people").Append(html);
+                //await window.GetElement(".people").Append(html);
             };
         };
 

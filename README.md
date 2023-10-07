@@ -144,6 +144,123 @@ h1 {
 }
 ```
 
+## New ForEach Bindings in 2.4
+We all know the old bindings. They are still there and work as usual. But now there are new ones. They are called "ForEach Bindings".
+You use them in your html file with a foreach loop.
+
+Program.cs
+```cs
+ { ... } // Removed for shorter code
+
+var html = new Html();
+html.Load("index.html");
+html.ForEachBinding(new People()); <-- This is a foreach binding. It only needs the instance of the class where the iteration objects are located.
+
+window.ShowIcon = Visibility.Collapsed;
+window.ResizeMode = ResizeMode.CanResize;
+window.Background = new SolidColorBrush(Color.FromRgb(33, 37, 41));
+window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+window.Titlebar = new WindowTitlebar
+{
+    Background = new SolidColorBrush(Color.FromRgb(33, 37, 41)),
+    Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255))
+};
+
+ImageSource? icon = GetIconFromResource("FSC.WUF.TEST.icon.ico");
+if (icon is not null)
+{
+    window.Icon = icon;
+}
+
+window.Load(html);
+
+ { ... } // Removed for shorter code
+```
+
+People.cs
+```cs
+public class People
+{
+    public List<Person> GetPeople = new List<Person>();
+
+    public People()
+    {
+        var person1 = new Person
+        {
+            Id = 0,
+            FirstName = "Jack",
+            LastName = "Exampleman",
+            Age = 30,
+        };
+
+        var person2 = new Person
+        {
+            Id = 1,
+            FirstName = "Timmy",
+            LastName = "Lalala",
+            Age = 16,
+        };
+
+        var person3 = new Person
+        {
+            Id = 2,
+            FirstName = "Cindy",
+            LastName = "Stone",
+            Age = 25,
+        };
+
+        GetPeople.Add(person1);
+        GetPeople.Add(person2);
+        GetPeople.Add(person3);
+    }
+}
+```
+
+index.html
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <title>Table Binding</title>
+    </head>
+    <body class="bg-dark">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Age</th>
+                </tr>
+            </thead>
+            <tbody class="people">
+                <foreach from="GetPeople" as="person"> <-- This is the foreach binding. It needs the iteration object name (list, dictionary, ...) and the name of the iteration variable that you want to use.
+                    <tr>
+                        <th scope="row">@Binding->person.Id;</th>
+                        <td>@Binding->person.FirstName;</td>
+                        <td>@Binding->person.LastName;</td>
+                        <td>@Binding->person.Age;</td>
+                    </tr>
+                </foreach>
+            </tbody>
+        </table>
+    </body>
+</html>
+```
+
+You are using a dictionary or a list inside a class, but you only need an element at a specific index? No problem. You can use the index in the foreach binding.
+`<th scope="row">@Binding->person.Id[0];</th>`
+`<th scope="row">@Binding->person.Id["example"];</th>`
+_Currently only integer and string is supported as indexer_
+
+## JsString in 2.4
+JsString is not a JavaScript code. It is the opposite. Sadly it came up, that code injection is possible. This class can be used like string
+`JsString variable = "Hello World";`
+So don't worry, nothing will change for you.
+By using this class, users of your program can't inject code anymore. It will be delivered safely.
+
 ## Bindings are great and new in 2.1
 Let's take a small look at them
 

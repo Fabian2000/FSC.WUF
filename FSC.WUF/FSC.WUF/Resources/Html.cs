@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Media3D;
 using System.Xml;
 
 namespace FSC.WUF
@@ -198,8 +199,10 @@ namespace FSC.WUF
 
             var xml = new XmlDocument();
             xml.LoadXml(resource);
+            var namespaceManager = new XmlNamespaceManager(xml.NameTable);
+            namespaceManager.AddNamespace("x", "http://www.w3.org/1999/xhtml");
 
-            var foreachNodes = xml.SelectNodes("//foreach[@as and @from]");
+            var foreachNodes = xml.SelectNodes("//x:foreach[@from and @as]", namespaceManager);
 
             if (foreachNodes is null)
             {
@@ -217,18 +220,18 @@ namespace FSC.WUF
 
                 foreach (var member in members)
                 {
-                    switch (member)
+                    switch (member.MemberType)
                     {
-                        case FieldInfo field:
+                        case MemberTypes.Field:
                             realFromValue = ((FieldInfo)member).GetValue(instance);
                             break;
 
-                        case PropertyInfo property:
+                        case MemberTypes.Property:
                             realFromValue = ((PropertyInfo)member).GetValue(instance);
                             break;
 
                         default:
-                            throw new InvalidOperationException($"Unknown member: {member.MemberType}");
+                            continue;
                     }
                 }
 
@@ -237,19 +240,32 @@ namespace FSC.WUF
                     continue;
                 }
 
+                List<XmlNode> newNodes = new List<XmlNode>();
                 foreach (dynamic realValue in realFromValue)
                 {
-                    foreach (var node in FindAllNodesAndSubNodes(foreachNode))
+                    XmlNode foreachNodeClone = foreachNode.CloneNode(true);
+                    List<XmlNode> nodes = FindAllNodesAndSubNodes(foreachNodeClone);
+                    foreach (var node in nodes)
                     {
                         if (node.Attributes is not null)
                         {
                             foreach (XmlAttribute attribut in node.Attributes)
                             {
-                                attribut.Value = MapItemToForEachBinding(realValue, asValue, attribut.Value);
+                                attribut.Value = MapItemToForEachBinding(realValue, realValue, asValue, attribut.Value);
                             }
                         }
 
-                        node.InnerText = MapItemToForEachBinding(realValue, asValue, node.InnerText);
+                        if (node.HasChildNodes && node.ChildNodes[0].NodeType == XmlNodeType.Element)
+                        {
+                            continue;
+                        }
+
+                        node.InnerText = MapItemToForEachBinding(realValue, realValue, asValue, node.InnerText);
+                    }
+                    
+                    foreach (XmlNode node in foreachNodeClone.ChildNodes)
+                    {
+                        newNodes.Add(node.CloneNode(true));
                     }
                 }
 
@@ -260,7 +276,9 @@ namespace FSC.WUF
                     continue;
                 }
 
-                foreach (XmlNode node in foreachNode.ChildNodes)
+                newNodes.Reverse();
+
+                foreach (XmlNode node in newNodes)
                 {
                     parent.InsertAfter(node, foreachNode);
                 }
@@ -282,7 +300,8 @@ namespace FSC.WUF
                     nodes.AddRange(FindAllNodesAndSubNodes(childNode));
                 }
 
-                if (childNode.Name.Equals("foreach", StringComparison.OrdinalIgnoreCase))
+                if (childNode.NodeType == XmlNodeType.Element)
+                //if (childNode.Name.Equals("foreach", StringComparison.OrdinalIgnoreCase))
                 {
                     nodes.Add(childNode);
                 }
@@ -291,7 +310,7 @@ namespace FSC.WUF
             return nodes;
         }
 
-        private string MapItemToForEachBinding(dynamic? item, string asValue, string content)
+        private string MapItemToForEachBinding<T>(dynamic? item, T instance, string asValue, string content)
         {
             string result = Regex.Replace(content, $@"@Binding->{asValue}\.(.*?);", (match) =>
             {
@@ -321,14 +340,23 @@ namespace FSC.WUF
                             return match.Value;
                         }
 
-                        switch (member)
+                        object? temp = null;
+                        Type? type = null;
+
+                        switch (member.MemberType)
                         {
-                            case FieldInfo field:
-                                item = Convert.ChangeType(((FieldInfo)member).GetValue(val), member.GetType());
+                            case MemberTypes.Field:
+                                FieldInfo fieldInfo = ((FieldInfo)member);
+                                temp = fieldInfo.GetValue(instance);
+                                type = temp.GetType();
+                                item = Convert.ChangeType(temp, type);
                                 break;
 
-                            case PropertyInfo property:
-                                item = Convert.ChangeType(((PropertyInfo)member).GetValue(val), member.GetType());
+                            case MemberTypes.Property:
+                                PropertyInfo propertyInfo = ((PropertyInfo)member);
+                                temp = propertyInfo.GetValue(instance);
+                                type = temp.GetType();
+                                item = Convert.ChangeType(temp, type);
                                 break;
 
                             default:
@@ -341,21 +369,30 @@ namespace FSC.WUF
                         string index = val.Split('[')[1].Split(']')[0];
 
                         MemberInfo[] members = item.GetType().GetMembers();
-                        MemberInfo? member = members.FirstOrDefault(x => x.Name.Equals(val, StringComparison.OrdinalIgnoreCase));
+                        MemberInfo? member = members.FirstOrDefault(x => x.Name.Equals(val2, StringComparison.OrdinalIgnoreCase));
 
                         if (member is null)
                         {
                             return match.Value;
                         }
 
-                        switch (member)
+                        object? temp = null;
+                        Type? type = null;
+
+                        switch (member.MemberType)
                         {
-                            case FieldInfo field:
-                                item = Convert.ChangeType(((FieldInfo)member).GetValue(val), member.GetType());
+                            case MemberTypes.Field:
+                                FieldInfo fieldInfo = ((FieldInfo)member);
+                                temp = fieldInfo.GetValue(instance);
+                                type = temp.GetType();
+                                item = Convert.ChangeType(temp, type);
                                 break;
 
-                            case PropertyInfo property:
-                                item = Convert.ChangeType(((PropertyInfo)member).GetValue(val), member.GetType());
+                            case MemberTypes.Property:
+                                PropertyInfo propertyInfo = ((PropertyInfo)member);
+                                temp = propertyInfo.GetValue(instance);
+                                type = temp.GetType();
+                                item = Convert.ChangeType(temp, type);
                                 break;
 
                             default:
@@ -382,10 +419,10 @@ namespace FSC.WUF
                     }
                 }
 
-                return string.Empty;
+                return item?.ToString() ?? content;
             });
 
-            return item?.ToString() ?? content;
+            return result;
         }
 
         /// <summary>
