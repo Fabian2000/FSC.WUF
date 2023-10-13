@@ -254,6 +254,7 @@ You are using a dictionary or a list inside a class, but you only need an elemen
 `<th scope="row">@Binding->person.Id[0];</th>`
 `<th scope="row">@Binding->person.Id["example"];</th>`
 _Currently only integer and string is supported as indexer_
+_Info: If you put the foreach into a new file, you need a parent element, that wraps everything. The foreach is not a valid wrapper node._
 
 ## JsString in 2.4
 JsString is not a JavaScript code. It is the opposite. Sadly it came up, that code injection is possible. This class can be used like string

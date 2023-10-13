@@ -397,7 +397,19 @@ namespace FSC.WUF
         /// <returns>Returns the value as a string</returns>
         public async Task<string> Value()
         {
-            return await ExecuteScript("value");
+            string result = await ExecuteScript("value");
+
+            if (result.StartsWith(@""""))
+            {
+                result = result.Substring(1);
+            }
+
+            if (result.EndsWith(@""""))
+            {
+                result = result.Substring(0, result.Length - 1);
+            }
+
+            return result;
         }
 
         /// <summary>

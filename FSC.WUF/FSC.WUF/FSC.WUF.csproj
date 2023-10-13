@@ -16,18 +16,17 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
     <PackageReleaseNotes>
-		Patched: Critical code injection,
-		Added: New ForEach Binding
+		Fixed a small bug in the new foreach binding.
 	</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
     <PackageId>FSC_WebUIFramework</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageVersion>2.4.0.0</PackageVersion>
-    <AssemblyVersion>2.4.0.0</AssemblyVersion>
-    <FileVersion>2.4.0.0</FileVersion>
-    <Version>2.4.0.0</Version>
+	<PackageVersion>2.4.1.0</PackageVersion>
+    <AssemblyVersion>2.4.1.0</AssemblyVersion>
+    <FileVersion>2.4.1.0</FileVersion>
+    <Version>2.4.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

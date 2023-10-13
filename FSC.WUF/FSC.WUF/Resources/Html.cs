@@ -209,6 +209,21 @@ namespace FSC.WUF
                 return;
             }
 
+            if (foreachNodes.Count == 0)
+            {
+                foreachNodes = xml.SelectNodes("//foreach[@from and @as]");
+
+                if (foreachNodes is null)
+                {
+                    return;
+                }
+            }
+
+            if (foreachNodes.Count == 0)
+            {
+                throw new Exception("No foreach found");
+            }
+
             foreach (XmlNode foreachNode in foreachNodes)
             {
                 string? asValue = foreachNode.Attributes?["as"]?.Value;
