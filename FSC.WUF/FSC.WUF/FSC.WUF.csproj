@@ -16,17 +16,27 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
     <PackageReleaseNotes>
-		Fixed a small bug in the new foreach binding.
+		- Updated internal Bootstrap to version 5.3.3.
+		- Fixed Count() method for Html elements.
+		- Fixed Attr(...). Now returning without quotes.
+		- Fixed internal function for element finding
+		- Added GetElement to find elements in elements (Not compatible with Count() method)
+		- Added CurrentTime() for media elements
+		- Added Context class for canvas elements
+		- Added ContextType
+		- Some smaller bug fixes
+		- Added Hight / Width methods for elements
+		- Added some canvas methods
 	</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Fabian2000/FSC.WUF.git</RepositoryUrl>
     <PackageId>FSC_WebUIFramework</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageVersion>2.4.1.0</PackageVersion>
-    <AssemblyVersion>2.4.1.0</AssemblyVersion>
-    <FileVersion>2.4.1.0</FileVersion>
-    <Version>2.4.1.0</Version>
+	<PackageVersion>2.5.0.0</PackageVersion>
+    <AssemblyVersion>2.5.0.0</AssemblyVersion>
+    <FileVersion>2.5.0.0</FileVersion>
+    <Version>2.5.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -44,6 +44,13 @@ namespace FSC.WUF.TEST
 
             window.OnLoaded += async (s, e) =>
             {
+                var test = await window.GetElement("tr").GetElement("th", 1);
+                MessageBox.Show(await test.InnerText());
+                // Count test for fixing count method
+                //var countElements = await window.GetElement("body").Count();
+                /*var test = window.GetElement("body");
+                await test.Test();*/
+
                 //var people = new List<Person>();
 
                 //var person1 = new Person

@@ -1,6 +1,8 @@
 ﻿using FSC.WUF.Elements;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +30,11 @@ namespace FSC.WUF
             }
             _element = element;
             _window = window;
+        }
+
+        internal string PreparedQuerySelector()
+        {
+            return _js.ToString();
         }
 
         /// <summary>
@@ -84,6 +91,20 @@ namespace FSC.WUF
             return await GetOtherElementThan($"selectedOptions[{index}]");
         }
 
+        /// <summary>
+        /// Gets an element inside the current element
+        /// (Attention: Not compatible with all methods. Example: Count() will not work on this)
+        /// </summary>
+        /// <returns>Returns a new instance of HtmlDocument</returns>
+        public async Task<HtmlDocument> GetElement(JsString element, int i = -1)
+        {
+            if (i == -1)
+            {
+                return await GetOtherElementThan($"querySelector({element})");
+            }
+            return await GetOtherElementThan($"querySelectorAll({element})[{i}]");
+        }
+
         private async Task<HtmlDocument> GetOtherElementThan(string js)
         {
             StringBuilder element = new StringBuilder();
@@ -93,7 +114,7 @@ namespace FSC.WUF
 
             var elementGuid = await _window.ExecuteScript(element.ToString());
 
-            return new HtmlDocument(_window, $"""[element-guid="{elementGuid}"]""");
+            return new HtmlDocument(_window, $"""[element-guid="{elementGuid.Trim('"')}"]""");
         }
 
         /// <summary>
@@ -112,6 +133,38 @@ namespace FSC.WUF
         public async Task Play()
         {
             await ExecuteScript("play()");
+        }
+
+        /// <summary>
+        /// Sets the playback time of a Video or Audio player
+        /// </summary>
+        public async Task CurrentTime(double time)
+        {
+            await ExecuteScript($"currentTime = {time}");
+        }
+
+        /// <summary>
+        /// Gets the current playback time of a Video or Audio player
+        /// </summary>
+        public async Task<double> CurrentTime()
+        {
+            return Convert.ToDouble((await ExecuteScript("currentTime")).Trim('"'));
+        }
+
+        /// <summary>
+        /// Gets the duration of a Video or Audio player
+        /// </summary>
+        /// <returns>Returns the duration as a double (null if no content loaded)</returns>
+        public async Task<double?> Duration()
+        {
+            var durationString = await ExecuteScript("duration");
+            durationString = durationString.Trim('"');
+
+            if (double.TryParse(durationString, out double result))
+            {
+                return result;
+            }
+            return null;
         }
 
         /// <summary>
@@ -156,7 +209,7 @@ namespace FSC.WUF
         /// <returns>Returns an attribute as string</returns>
         public async Task<string> Attr(JsString attrName)
         {
-            return await ExecuteScript($"getAttribute({attrName})");
+            return (await ExecuteScript($"getAttribute({attrName})")).Trim('"');
         }
 
         /// <summary>
@@ -165,7 +218,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Attr(JsString attrName, JsString attrValue)
         {
-            if (((string)attrValue).StartsWith("res://", System.StringComparison.OrdinalIgnoreCase))
+            if (((string)attrValue).StartsWith("res://", StringComparison.OrdinalIgnoreCase))
             {
                 Html html = new Html();
                 var getName = html.GetSingleByNameEmbeddedResource(((string)attrValue).Replace("res://", "", StringComparison.OrdinalIgnoreCase));
@@ -376,12 +429,13 @@ namespace FSC.WUF
         }
 
         /// <summary>
-        /// Gets the amount of elements from GetElement()
+        /// Gets the amount of elements from GetElement() 
+        /// (Example: ...GetElement("body").Count() would return 1, because only 1 body is available
         /// </summary>
         /// <returns>Returns a number of all elements that were found by GetElement()</returns>
         public async Task<int> Count()
         {
-            var count = await _window.ExecuteScript($"document.querySelectorAll('{_element}').length");
+            var count = await _window.ExecuteScript($"document.querySelectorAll({_element}).length");
             count = count?.Trim('"');
             if (int.TryParse(count, out int result))
             {
@@ -427,7 +481,7 @@ namespace FSC.WUF
         /// <returns>Returns the value</returns>
         public async Task<bool> Checked()
         {
-            return await ExecuteScript("checked") == "true";
+            return (await ExecuteScript("checked")).Trim('"') == "true";
         }
 
         /// <summary>
@@ -445,7 +499,7 @@ namespace FSC.WUF
         /// <returns>Returns the status</returns>
         public async Task<bool> Disabled()
         {
-            return await ExecuteScript("disabled") == "true";
+            return (await ExecuteScript("disabled")).Trim('"') == "true";
         }
 
         /// <summary>
@@ -463,7 +517,7 @@ namespace FSC.WUF
         /// <returns>Returns the status</returns>
         public async Task<bool> Readonly()
         {
-            return await ExecuteScript("readonly") == "true";
+            return (await ExecuteScript("readonly")).Trim('"') == "true";
         }
 
         /// <summary>
@@ -481,7 +535,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollHeight</returns>
         public async Task<int> ScrollHeight()
         {
-            return Convert.ToInt32(await ExecuteScript("scrollHeight"));
+            return Convert.ToInt32((await ExecuteScript("scrollHeight")).Trim('"'));
         }
 
         /// <summary>
@@ -490,7 +544,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollWidth</returns>
         public async Task<int> ScrollWidth()
         {
-            return Convert.ToInt32(await ExecuteScript(".scrollWidth"));
+            return Convert.ToInt32((await ExecuteScript(".scrollWidth")).Trim('"'));
         }
 
         /// <summary>
@@ -508,7 +562,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollTop</returns>
         public async Task<int> ScrollTop()
         {
-            return Convert.ToInt32(await ExecuteScript("scrollTop"));
+            return Convert.ToInt32((await ExecuteScript("scrollTop")).Trim('"'));
         }
 
         /// <summary>
@@ -517,7 +571,7 @@ namespace FSC.WUF
         /// <returns>Returns the clientHeight</returns>
         public async Task<int> ClientHeight()
         {
-            return Convert.ToInt32(await ExecuteScript("clientHeight"));
+            return Convert.ToInt32((await ExecuteScript("clientHeight")).Trim('"'));
         }
 
         /// <summary>
@@ -526,7 +580,25 @@ namespace FSC.WUF
         /// <returns>Returns the clientWidth</returns>
         public async Task<int> ClientWidth()
         {
-            return Convert.ToInt32(await ExecuteScript("clientWidth"));
+            return Convert.ToInt32((await ExecuteScript("clientWidth")).Trim('"'));
+        }
+
+        /// <summary>
+        /// Gets the client height of an element
+        /// </summary>
+        /// <returns>Returns the clientHeight</returns>
+        public async Task<int> Height()
+        {
+            return Convert.ToInt32((await ExecuteScript("height")).Trim('"'));
+        }
+
+        /// <summary>
+        /// Gets the client width of an element
+        /// </summary>
+        /// <returns>Returns the clientWidth</returns>
+        public async Task<int> Width()
+        {
+            return Convert.ToInt32((await ExecuteScript("width")).Trim('"'));
         }
 
         /// <summary>
@@ -544,7 +616,7 @@ namespace FSC.WUF
         /// <returns>Returns the scrollLeft</returns>
         public async Task<int> ScrollLeft()
         {
-            return Convert.ToInt32(await ExecuteScript("scrollLeft"));
+            return Convert.ToInt32((await ExecuteScript("scrollLeft")).Trim('"'));
         }
 
         /// <summary>
@@ -553,7 +625,7 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Focus()
         {
-            await ExecuteScript("focus();");
+            await ExecuteScript("focus()");
         }
 
         /// <summary>
@@ -562,12 +634,43 @@ namespace FSC.WUF
         /// <returns></returns>
         public async Task Click()
         {
-            await ExecuteScript("click();");
+            await ExecuteScript("click()");
+        }
+
+        /// <summary>
+        /// Gets the drawing context for the canvas
+        /// Currently, only context 2D is supported
+        /// </summary>
+        public CanvasRenderingContext2D GetContext2D(ContextType contextType)
+        {
+            return new CanvasRenderingContext2D(_window, this);
+        }
+
+        /// <summary>
+        /// Gets the data URL of an element like a canvas
+        /// </summary>
+        public Task<string> ToDataURL()
+        {
+            return ExecuteScript("toDataURL()");
+        }
+
+        /// <summary>
+        /// Clears the content of a canvas at the specified position
+        /// </summary>
+        /// <param name="x">x-coordinate of the starting point </param>
+        /// <param name="y">y-coordinate of the starting point</param>
+        /// <param name="width">width of the rectangle</param>
+        /// <param name="height">height of the rectangle</param>
+        /// <returns></returns>
+        public Task ClearRect(int x, int y, int width, int height)
+        {
+            return ExecuteScript($"clearRect({x}, {y}, {width}, {height})");
         }
 
         private Task<string> ExecuteScript(string scriptAttachment)
         {
-            return _window.ExecuteScript($"{_js}.{scriptAttachment};");
+            var executePreview = $"{_js}.{scriptAttachment};";
+            return _window.ExecuteScript(executePreview);
         }
 
         private List<string> JsListToList(string jsList)
