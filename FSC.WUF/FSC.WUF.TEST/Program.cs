@@ -21,7 +21,7 @@ namespace FSC.WUF.TEST
         {
             var html = new Html();
             html.Load("index.html");
-            html.ForEachBinding(new People());
+            //html.ForEachBinding(new People());
 
             window.ShowIcon = Visibility.Collapsed;
             window.ResizeMode = ResizeMode.CanResize;
@@ -44,8 +44,31 @@ namespace FSC.WUF.TEST
 
             window.OnLoaded += async (s, e) =>
             {
-                var test = await window.GetElement("tr").GetElement("th", 1);
-                MessageBox.Show(await test.InnerText());
+                var canvas = window.GetElement("canvas");
+                var context = canvas.GetContext(ContextType.Context2D);
+
+                // Height of each stripe (integer)
+                int stripeHeight = 83;
+
+                // Black (top stripe)
+                await context.SetFillStyle("#000000");  // Black
+                await context.FillRect(0, 0, 250, stripeHeight);
+
+                // Red (middle stripe)
+                await context.SetFillStyle("#FF0000");  // Red
+                await context.FillRect(0, stripeHeight, 250, stripeHeight);
+
+                // Gold (bottom stripe, fills the remaining space)
+                await context.SetFillStyle("#FFCC00");  // Gold
+                await context.FillRect(0, stripeHeight * 2, 250, 250 - stripeHeight * 2);
+
+                // Text "FSC.WUF" in the center
+                await context.SetFont("bold 30px Arial");
+                await context.SetTextAlign(TextAlign.Center);
+                await context.SetTextBaseline(TextBaseline.Middle);
+                await context.SetFillStyle("#000000");  // Black text
+                await context.FillText("FSC.WUF", 250 / 2, 250 / 2);
+
                 // Count test for fixing count method
                 //var countElements = await window.GetElement("body").Count();
                 /*var test = window.GetElement("body");

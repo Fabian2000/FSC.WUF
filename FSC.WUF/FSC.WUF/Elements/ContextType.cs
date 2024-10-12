@@ -1,4 +1,4 @@
-﻿namespace FSC.WUF.Elements
+﻿namespace FSC.WUF
 {
     /// <summary>
     /// The ContextType enum is used to define the type of the context

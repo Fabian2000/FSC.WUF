@@ -22,7 +22,7 @@ namespace FSC.WUF
         /// <summary>
         /// Draws a filled rectangle.
         /// </summary>
-        public async Task FillRect(int x, int y, int width, int height)
+        public async Task FillRect(double x, double y, double width, double height)
         {
             await ExecuteScript($"fillRect({x}, {y}, {width}, {height})");
         }
@@ -30,7 +30,7 @@ namespace FSC.WUF
         /// <summary>
         /// Clears the specified pixels within a given rectangle.
         /// </summary>
-        public async Task ClearRect(int x, int y, int width, int height)
+        public async Task ClearRect(double x, double y, double width, double height)
         {
             await ExecuteScript($"clearRect({x}, {y}, {width}, {height})");
         }
@@ -38,7 +38,7 @@ namespace FSC.WUF
         /// <summary>
         /// Draws a rectangular outline.
         /// </summary>
-        public async Task StrokeRect(int x, int y, int width, int height)
+        public async Task StrokeRect(double x, double y, double width, double height)
         {
             await ExecuteScript($"strokeRect({x}, {y}, {width}, {height})");
         }
@@ -62,7 +62,7 @@ namespace FSC.WUF
         /// <summary>
         /// Moves the path to the start point in the current sub-path, with the specified point.
         /// </summary>
-        public async Task MoveTo(int x, int y)
+        public async Task MoveTo(double x, double y)
         {
             await ExecuteScript($"moveTo({x}, {y})");
         }
@@ -70,7 +70,7 @@ namespace FSC.WUF
         /// <summary>
         /// Adds a straight line to the current sub-path by connecting the sub-path's last point to the specified (x, y) coordinates.
         /// </summary>
-        public async Task LineTo(int x, int y)
+        public async Task LineTo(double x, double y)
         {
             await ExecuteScript($"lineTo({x}, {y})");
         }
@@ -94,7 +94,7 @@ namespace FSC.WUF
         /// <summary>
         /// Draws the filled text at the position.
         /// </summary>
-        public async Task FillText(JsString text, int x, int y)
+        public async Task FillText(JsString text, double x, double y)
         {
             await ExecuteScript($"fillText({text}, {x}, {y})");
         }
@@ -102,7 +102,7 @@ namespace FSC.WUF
         /// <summary>
         /// Draws the outlined text at the position.
         /// </summary>
-        public async Task StrokeText(JsString text, int x, int y)
+        public async Task StrokeText(JsString text, double x, double y)
         {
             await ExecuteScript($"strokeText({text}, {x}, {y})");
         }
@@ -121,6 +121,42 @@ namespace FSC.WUF
         public async Task<string> GetFont()
         {
             return (await ExecuteScript("font")).Trim('"');
+        }
+
+        /// <summary>
+        /// Sets the text alignment (e.g., "center", "left", "right").
+        /// </summary>
+        /// <param name="textAlign">The text alignment to set (e.g., TextAlign.Center).</param>
+        public async Task SetTextAlign(TextAlign textAlign)
+        {
+            await ExecuteScript($"textAlign = '{textAlign.ToString().ToLower()}'");
+        }
+
+        /// <summary>
+        /// Gets the current text alignment.
+        /// </summary>
+        /// <returns>A string representing the current text alignment (e.g., "center", "left", "right").</returns>
+        public async Task<string> GetTextAlign()
+        {
+            return (await ExecuteScript("textAlign")).Trim('"');
+        }
+
+        /// <summary>
+        /// Sets the text baseline alignment (e.g., "middle", "alphabetic", "top").
+        /// </summary>
+        /// <param name="textBaseline">The text baseline to set (e.g., TextBaseline.Middle).</param>
+        public async Task SetTextBaseline(TextBaseline textBaseline)
+        {
+            await ExecuteScript($"textBaseline = '{textBaseline.ToString().ToLower()}'");
+        }
+
+        /// <summary>
+        /// Gets the current text baseline alignment.
+        /// </summary>
+        /// <returns>A string representing the current text baseline alignment (e.g., "middle", "alphabetic", "top").</returns>
+        public async Task<string> GetTextBaseline()
+        {
+            return (await ExecuteScript("textBaseline")).Trim('"');
         }
 
         /// <summary>
@@ -158,7 +194,7 @@ namespace FSC.WUF
         /// <summary>
         /// Sets the thickness of the lines.
         /// </summary>
-        public async Task SetLineWidth(int width)
+        public async Task SetLineWidth(double width)
         {
             await ExecuteScript($"lineWidth = {width}");
         }
@@ -166,10 +202,10 @@ namespace FSC.WUF
         /// <summary>
         /// Gets the thickness of the lines.
         /// </summary>
-        public async Task<int> GetLineWidth()
+        public async Task<double> GetLineWidth()
         {
             var result = await ExecuteScript("lineWidth");
-            return int.Parse(result);
+            return double.Parse(result);
         }
 
         /// <summary>
@@ -207,7 +243,7 @@ namespace FSC.WUF
         /// <summary>
         /// Sets the miter limit ratio.
         /// </summary>
-        public async Task SetMiterLimit(int limit)
+        public async Task SetMiterLimit(double limit)
         {
             await ExecuteScript($"miterLimit = {limit}");
         }
@@ -215,10 +251,10 @@ namespace FSC.WUF
         /// <summary>
         /// Gets the miter limit ratio.
         /// </summary>
-        public async Task<int> GetMiterLimit()
+        public async Task<double> GetMiterLimit()
         {
             var result = await ExecuteScript("miterLimit");
-            return int.Parse(result.Trim('"'));
+            return double.Parse(result.Trim('"'));
         }
 
         /// <summary>
@@ -242,7 +278,7 @@ namespace FSC.WUF
         /// Sets the shadow blur radius.
         /// </summary>
         /// <param name="blur">The blur radius of the shadow</param>
-        public async Task SetShadowBlur(int blur)
+        public async Task SetShadowBlur(double blur)
         {
             await ExecuteScript($"shadowBlur = {blur}");
         }
@@ -250,10 +286,10 @@ namespace FSC.WUF
         /// <summary>
         /// Gets the shadow blur radius.
         /// </summary>
-        public async Task<int> GetShadowBlur()
+        public async Task<double> GetShadowBlur()
         {
             var result = await ExecuteScript("shadowBlur");
-            return int.Parse(result.Trim('"'));
+            return double.Parse(result.Trim('"'));
         }
 
         /// <summary>
@@ -261,7 +297,7 @@ namespace FSC.WUF
         /// </summary>
         /// <param name="x">The horizontal offset of the shadow</param>
         /// <param name="y">The vertical offset of the shadow</param>
-        public async Task SetShadowOffset(int x, int y)
+        public async Task SetShadowOffset(double x, double y)
         {
             await ExecuteScript($"shadowOffsetX = {x}; shadowOffsetY = {y}");
         }
@@ -269,11 +305,11 @@ namespace FSC.WUF
         /// <summary>
         /// Gets the shadow offset.
         /// </summary>
-        public async Task<(int x, int y)> GetShadowOffset()
+        public async Task<(double x, double y)> GetShadowOffset()
         {
             var result = await ExecuteScript("shadowOffsetX + ',' + shadowOffsetY");
             var values = result.Split(',');
-            return (int.Parse(values[0].Trim('"')), int.Parse(values[1].Trim('"')));
+            return (double.Parse(values[0].Trim('"')), double.Parse(values[1].Trim('"')));
         }
 
         /// <summary>
@@ -319,7 +355,7 @@ namespace FSC.WUF
         /// <param name="image">The image to draw</param>
         /// <param name="x">The x-coordinate of the upper-left corner of the image</param>
         /// <param name="y">The y-coordinate of the upper-left corner of the image</param>
-        public async Task DrawImage(HtmlDocument image, int x, int y)
+        public async Task DrawImage(HtmlDocument image, double x, double y)
         {
             await DrawImage(image, x, y, await image.Width(), await image.Height());
         }
@@ -332,7 +368,7 @@ namespace FSC.WUF
         /// <param name="y">The y-coordinate of the upper-left corner of the image</param>
         /// <param name="width">The width of the image</param>
         /// <param name="height">The height of the image</param>
-        public async Task DrawImage(HtmlDocument image, int x, int y, int width, int height)
+        public async Task DrawImage(HtmlDocument image, double x, double y, double width, double height)
         {
             var imageElement = image.PreparedQuerySelector();
             await ExecuteScript($"drawImage({imageElement}, {x}, {y}, {width}, {height})");
@@ -346,7 +382,7 @@ namespace FSC.WUF
         /// <param name="radius">The radius of the arc.</param>
         /// <param name="startAngle">The starting angle of the arc in radians.</param>
         /// <param name="endAngle">The ending angle of the arc in radians.</param>
-        public async Task Arc(int x, int y, int radius, double startAngle, double endAngle)
+        public async Task Arc(double x, double y, double radius, double startAngle, double endAngle)
         {
             await ExecuteScript($"arc({x}, {y}, {radius}, {startAngle}, {endAngle})");
         }
@@ -388,8 +424,9 @@ namespace FSC.WUF
             if (string.IsNullOrEmpty(_contextVariable))
             {
                 _contextVariable = "customContext" + RandomNumberGenerator.GetInt32(999999);
-                _contextVariable = $"let {_contextVariable} = {_element.PreparedQuerySelector()}.getContext('2D');";
-                await _window.ExecuteScript(_contextVariable);
+                var contextCreationScript = $"let {_contextVariable} = {_element.PreparedQuerySelector()}.getContext('2d');";
+                await _window.ExecuteScript(contextCreationScript);
+                await _window.ExecuteScript("let testvar = 'hallo'");
             }
             var executePreview = $"{_contextVariable}.{script};";
             return await _window.ExecuteScript(executePreview);

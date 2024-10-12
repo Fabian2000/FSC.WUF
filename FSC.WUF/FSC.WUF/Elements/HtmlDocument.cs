@@ -641,7 +641,7 @@ namespace FSC.WUF
         /// Gets the drawing context for the canvas
         /// Currently, only context 2D is supported
         /// </summary>
-        public CanvasRenderingContext2D GetContext2D(ContextType contextType)
+        public CanvasRenderingContext2D GetContext(ContextType contextType)
         {
             return new CanvasRenderingContext2D(_window, this);
         }

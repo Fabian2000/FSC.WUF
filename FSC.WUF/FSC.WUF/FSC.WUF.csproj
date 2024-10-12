@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0-windows;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <LangVersion>11.0</LangVersion>
@@ -11,7 +11,7 @@
     <Title>$(AssemblyName)</Title>
     <Authors>Fabian Schlüter</Authors>
     <Description>FSC.WUF Web UI Framework. A small library to write professional software with HTML and CSS.</Description>
-    <Copyright>Copyright 2023 Fabian Schlüter</Copyright>
+    <Copyright>Copyright 2024 Fabian Schlüter</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>UI;Framework;GUI;UI Framework;CSharp;Web;Browser;HTML;CSS;WebView;WPF;Bootstrap;Website;Windows</PackageTags>
@@ -27,6 +27,7 @@
 		- Some smaller bug fixes
 		- Added Hight / Width methods for elements
 		- Added some canvas methods
+		- Added Context2D for canvas
 	</PackageReleaseNotes>
     <IncludeSymbols>False</IncludeSymbols>
     <PackageProjectUrl>https://github.com/Fabian2000/FSC.WUF</PackageProjectUrl>
